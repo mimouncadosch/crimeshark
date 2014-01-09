@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html ng-app="myApp">
-	<head>
-		<meta charset="utf8">
-		<base href="/">
-		<title>Angular Express Seed App</title>
-		<link rel="stylesheet" href="css/app.css">
-	</head>
-	<body>
-		<div ng-controller="AppCtrl">
-		<!--The double brackets refer to the $scope.name variable in public/js/controllers.js-->
-		<h2>Hello {{name}}</h2>
-		<ul class="menu">
-		<li><a href="view1">view1</a></li>
-		<li><a href="view2">view2</a></li>
-		</ul>
-		<!--The partials are embeded in the ng-view div-->
-		<div ng-view></div>
+<head>
+	<title>Bogotá Segura</title>
+	<meta charset="utf8" name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<base href="/">
+	<link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiNAReClZyBgsJxbYR5Al_xpC6DtLat7Y&sensor=false">
+	</script>
+</head>
+
+<body>
+	<div class="row">
+		<div id="map-canvas" class="col-md-8"></div>
+		<div id="form" class="col-md-4">The buzz around drones is undeniable these days -- as it turns out, even Martha Stewart uses one to survey her farm -- but there still hasn't been a runaway drone hit that has captured that imaginations of the masses. That’s exactly what a hardware startup called AirDroids is trying to accomplish with the Pocket Drone, a (relatively) inexpensive flying machine that’s meant to give people of… Read More
 		</div>
-	</body>
-	<script src="lib/angular/angular.js"></script>
-	<script src="lib/angular/angular-route.js"></script>
-	<script src="js/app.js"></script>
-	<script src="js/services.js"></script>
-	<script src="js/controllers.js"></script>
-	<script src="js/filters.js"></script>
-	<script src="js/directives.js"></script>
+	</div>
+
+		
+	
+
+</body>
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular/angular-route.js"></script>
+<script src="js/app.js"></script>
+<script src="js/services.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/directives.js"></script>
+<script scr="js/bootstrap.js"></script>
 </html>
