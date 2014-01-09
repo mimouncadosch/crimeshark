@@ -12,9 +12,10 @@ var mongoose = require('mongoose');
 var queryString = require('querystring');
 var request = require('request');
 
-var mongourl = process.env.MONGOLAB_URI || 
-  process.env.MONGOHQ_URL || 
-  'mongodb://localhost/reports'; 
+// var mongourl = process.env.MONGOLAB_URI || 
+//   process.env.MONGOHQ_URL || 
+//   'mongodb://localhost/reports'; 
+mongoose.connect('mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz');
 mongoose.connect(mongourl);
 var db = mongoose.connection;
 
