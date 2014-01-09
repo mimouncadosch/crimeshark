@@ -22,31 +22,36 @@ var reportSchema = mongoose.Schema({
 	createdAt: { type: Date, default: Date.now },
 	title: String,
 	description: String,
-	imageURL: String,
 	neighborhood: String,
 	place: String,
-	time: {type: Date}
+	time: {type: Date},
+	latitude: Number,
+	longitude: Number
 });
 
 var Report = db.model('Report', reportSchema);
 
-
-exports.name = function (req, res) {
-  res.json({
-  	name: 'Bob'
-  });
-};
-
 // Write a function that determines the neighborhood and place based on the latitude and longitude
 // exports.create_crime
 
-exports.generate_crime = function(req, res){
+exports.create_report = function(req, res){
+	console.log("I'm in the create_report'");
+
+	var query = req._parsedUrl.query;
+	var objParams = queryString.parse(query);
+
+	var title = objParams.title;
+	var description = objParams.description;
+	var place = objParams.place;
+	var latitude = objParams.latitude;
+	var longitude = objParams.longitude; 
+	
 	Report.create({
-		title: req.body.text,
-		description: req.body.text,
-		imageURL: req.body.text,
-		place: req.body.text,
-		time: req.body.text
+		title: title,
+		description: description,
+		place : place,
+		latitude : latitude,
+		longitude: longitude
 	}, function(err,report) {
 		if (err)
 			res.send(err);
@@ -56,4 +61,6 @@ exports.generate_crime = function(req, res){
 			res.json(reports);
 		});
 	});		
+	console.log(latitude);
+	console.log(longitude);
 };

@@ -63,6 +63,8 @@ function initialize() {
 		});
 		console.log(latitude);
 		console.log(longitude);
+		document.getElementById('latitude').value = latitude;
+		document.getElementById('longitude').value = longitude;
 		infowindow.open(map,marker);
 	}
 

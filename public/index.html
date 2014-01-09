@@ -16,9 +16,17 @@
 		<div id="map-canvas" class="col-md-8"></div>
 		<form>
 			<div class="col-md-4">
-				<input type="text" class="form-control input-lg text-center" placeholder="Type of Crime" ng-model="formData.text">
+				<input type="text" class="form-control input-lg text-center" placeholder="Type of Crime" ng-model="title">
+
+				<input type="text" class="form-control input-lg text-center" placeholder="Description" ng-model="description">
+				<input type="text" class="form-control input-lg text-center" placeholder="Place" ng-model="place">
 				
-				<button type="submit" class="btn btn-primary btn-lg" ng-click="createReport()">Add</button>
+				<input type="number" class="form-control input-lg" id="latitude" ng-model="latitude">
+
+				<input type="number" class="form-control input-lg" id="longitude" ng-model="longitude">
+
+				
+				<button type="submit" class="btn btn-primary btn-lg" ng-click="createReport()">createReport</button>
 			</div>
 		</form>
 	</div>
