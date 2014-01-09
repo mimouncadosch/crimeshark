@@ -33,7 +33,7 @@ function mainController($scope, $http, $rootScope, $location) {
                         params: real_report
                 }).
                 success(function(data) {
-                        $rootScope.newReport = data;
+                        $rootScope.newReport = $scope.data;
                         console.log("I'm accessing this");
                 })
                 .error(function(data) {

@@ -39,7 +39,7 @@ exports.create_report = function(req, res){
 
 	var query = req._parsedUrl.query;
 	var objParams = queryString.parse(query);
-
+	console.log(objParams);
 	var title = objParams.title;
 	var description = objParams.description;
 	var place = objParams.place;
