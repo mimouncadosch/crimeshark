@@ -11,11 +11,16 @@
 	</script>
 </head>
 
-<body>
+<body ng-controller="mainController">
 	<div class="row">
 		<div id="map-canvas" class="col-md-8"></div>
-		<div id="form" class="col-md-4">The buzz around drones is undeniable these days -- as it turns out, even Martha Stewart uses one to survey her farm -- but there still hasn't been a runaway drone hit that has captured that imaginations of the masses. That’s exactly what a hardware startup called AirDroids is trying to accomplish with the Pocket Drone, a (relatively) inexpensive flying machine that’s meant to give people of… Read More
-		</div>
+		<form>
+			<div class="col-md-4">
+				<input type="text" class="form-control input-lg text-center" placeholder="Type of Crime" ng-model="formData.text">
+				
+				<button type="submit" class="btn btn-primary btn-lg" ng-click="createReport()">Add</button>
+			</div>
+		</form>
 	</div>
 
 		

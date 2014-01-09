@@ -2,24 +2,40 @@
 
 /* Controllers */
 
-angular.module('myApp.controllers', []).
-	controller('AppCtrl', function ($scope, $http) {
+var reports = angular.module('myApp.controllers', []);
 
-		$http({
-			method: 'GET',
-			url: '/api/name'
-		}).success(function (data, status, headers, config) {
-			$scope.name = data.name;
-		}).error(function (data, status, headers, config) {
-			$scope.name = 'Error!'
-		});
+function mainController($scope, $http) {
+        $scope.formData = {};
 
-	}).
-	controller('MyCtrl1', function ($scope) {
-	// write Ctrl here
+        // when landing on the page, get all todos and show them
+        $http.get('/reports/reports')
+                .success(function(data) {
+                        $scope.reports = data;
+                })
+                .error(function(data) {
+                        console.log('Error: ' + data);
+                });
 
-	}).
-	controller('MyCtrl2', function ($scope) {
-	// write Ctrl here
+        // when submitting the add form, send the text to the node API
+        $scope.createReport = function() {
+                $http.post('/reports/reports', $scope.formData)
+                        .success(function(data) {
+                                $('input').val('');
+                                $scope.reports = data;
+                        })
+                        .error(function(data) {
+                                console.log('Error: ' + data);
+                        });
+        };
+        // // delete a todo after checking it
+        // $scope.deleteReport = function(id) {
+        //         $http.delete('/reports/reports/' + id)
+        //                 .success(function(data) {
+        //                         $scope.todos = data;
+        //                 })
+        //                 .error(function(data) {
+        //                         console.log('Error: ' + data);
+        //                 });
+        // };
 
-	});
+}

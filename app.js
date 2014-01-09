@@ -43,7 +43,8 @@ app.use("/partials", express.static(__dirname + "/public/partials"));
 app.use("/lib", express.static(__dirname + "/public/lib"));
 
 // JSON API
-app.get('/api/name', api.name);
+// app.get('/api/name', api.name);
+app.post('/reports/generate', api.generate_crime);
 
 // redirect all others to the index (HTML5 history)
 app.all("/*", function(req, res, next) {

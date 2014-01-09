@@ -57,4 +57,3 @@ exports.generate_crime = function(req, res){
 		});
 	});		
 };
-
