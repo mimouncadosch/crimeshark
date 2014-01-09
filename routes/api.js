@@ -16,7 +16,7 @@ var request = require('request');
 //   process.env.MONGOHQ_URL || 
 //   'mongodb://localhost/reports'; 
 mongoose.connect('mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz');
-mongoose.connect(mongourl);
+// mongoose.connect(mongourl);
 var db = mongoose.connection;
 
 var reportSchema = mongoose.Schema({
