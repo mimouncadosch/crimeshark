@@ -12,11 +12,11 @@ var mongoose = require('mongoose');
 var queryString = require('querystring');
 var request = require('request');
 
-// var mongourl = process.env.MONGOLAB_URI || 
-//   process.env.MONGOHQ_URL || 
-//   'mongodb://localhost/reports'; 
-mongoose.connect('mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz');
-// mongoose.connect(mongourl);
+var mongourl = process.env.MONGOLAB_URI || 
+  'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz' || 
+  'mongodb://localhost/reports'; 
+var localDB = 'mongodb://localhost/reports'; 
+mongoose.connect(localDB);
 var db = mongoose.connection;
 
 var reportSchema = mongoose.Schema({
@@ -37,10 +37,10 @@ var Report = db.model('Report', reportSchema);
 
 exports.create_report = function(req, res){
 	console.log("I'm in the create_report'");
-
+	console.log(objParams);
+	
 	var query = req._parsedUrl.query;
 	var objParams = queryString.parse(query);
-	console.log(objParams);
 	var title = objParams.title;
 	var description = objParams.description;
 	var place = objParams.place;
@@ -62,6 +62,21 @@ exports.create_report = function(req, res){
 			res.json(reports);
 		});
 	});		
-	console.log(latitude);
-	console.log(longitude);
 };
+
+exports.show_reports = function(req, res){
+	Report.find(function(err, result) {
+		if(err) {
+			return handleError(err);
+		} else {
+			return res.json({
+				result: result,
+				count: result.length
+			});
+		}
+	});
+}
+
+
+
+

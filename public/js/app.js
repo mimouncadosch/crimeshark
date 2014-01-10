@@ -26,8 +26,6 @@ config(function ($routeProvider, $locationProvider) {
 	$locationProvider.html5Mode(true);
 });
 
-
-
 function initialize() {
 	var myCenter = new google.maps.LatLng(4.5981,-74.0758);
 	var markersArray = [];
@@ -61,8 +59,6 @@ function initialize() {
 		var infowindow = new google.maps.InfoWindow({
 			content: "Gracias por reportar"
 		});
-		console.log(latitude);
-		console.log(longitude);
 		document.getElementById("latitude").value = latitude;
 		document.getElementById("longitude").value = longitude;
 		infowindow.open(map,marker);

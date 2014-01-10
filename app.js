@@ -45,7 +45,7 @@ app.use("/lib", express.static(__dirname + "/public/lib"));
 // JSON API
 // app.get('/api/name', api.name);
 app.post('/reports/create', api.create_report);
-
+app.get('/reports', api.show_reports);
 
 // redirect all others to the index (HTML5 history)
 app.all("/*", function(req, res, next) {

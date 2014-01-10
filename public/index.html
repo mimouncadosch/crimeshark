@@ -23,15 +23,17 @@
 				
 				<input type="text" class="form-control input-lg" id="latitude" ng-model="latitude">
 
-				<input type="text" class="form-control input-lg" id="longitude" ng-model="longitude">
-				
-				<button type="submit" class="btn btn-primary btn-lg" ng-click="createReport()">createReport</button>
-			</div>
-		</form>
-	</div>
+				<input enter="passCoordinates()" type="text" class="form-control input-lg" id="longitude" ng-model="longitude">
 
-		
-	
+			</div>
+
+			<button type="submit" class="btn btn-primary btn-lg" ng-click="createReport()">createReport</button>
+		</div>
+	</form>
+</div>
+
+
+
 
 </body>
 <script src="lib/angular/angular.js"></script>

@@ -1,11 +1,10 @@
 /* Controllers */
-var reports = angular.module('myApp.controllers', []);
+var myApp = angular.module('myApp.controllers', []);
 
 function mainController($scope, $http, $rootScope, $location) {
         $scope.newReport = {};
-
         // when landing on the page, get all todos and show them
-        $http.get('/reports/reports')
+        $http.get('/reports')
         .success(function(data) {
                 $scope.reports = data;
         })
@@ -19,14 +18,16 @@ function mainController($scope, $http, $rootScope, $location) {
                         title: $scope.title,
                         description: $scope.description,
                         place: $scope.place,
-                        latitude: $scope.latitude,
-                        longitude: $scope.longitude
+                        latitude: latitude.value,
+                        longitude: longitude.value
                 };
+                
                 console.log(real_report.title);
                 console.log(real_report.description);
                 console.log(real_report.place);
                 console.log(real_report.latitude);
                 console.log(real_report.longitude);
+
                 $http({
                         method: 'POST',
                         url: '/reports/create',
@@ -39,17 +40,15 @@ function mainController($scope, $http, $rootScope, $location) {
                 .error(function(data) {
                         console.log('Error: ' + data);
                 });
-        };
-
-        // // delete a todo after checking it
-        // $scope.deleteReport = function(id) {
-        //         $http.delete('/reports/reports/' + id)
-        //                 .success(function(data) {
-        //                         $scope.todos = data;
-        //                 })
+        //
+        // $scope.showReports = function(){
+        //         http.get('/reports')
+        //         .success(function(data){
+        //                 $scope.reports = data;
+        //                 console.log(data);
         //                 .error(function(data) {
         //                         console.log('Error: ' + data);
         //                 });
+        //         })
         // };
-
 }
