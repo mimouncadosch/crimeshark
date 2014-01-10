@@ -6,7 +6,8 @@ function mainController($scope, $http, $rootScope, $location) {
         // when landing on the page, get all todos and show them
         $http.get('/reports')
         .success(function(data) {
-                $scope.reports = data;
+                $rootScope.reports = data.result;
+                console.log(data.result);
         })
         .error(function(data) {
                 console.log('Error: ' + data);
@@ -40,9 +41,10 @@ function mainController($scope, $http, $rootScope, $location) {
                 .error(function(data) {
                         console.log('Error: ' + data);
                 });
-        //
+        };
+        
         // $scope.showReports = function(){
-        //         http.get('/reports')
+        //         $http.get('/reports')
         //         .success(function(data){
         //                 $scope.reports = data;
         //                 console.log(data);
@@ -51,4 +53,5 @@ function mainController($scope, $http, $rootScope, $location) {
         //                 });
         //         })
         // };
+
 }

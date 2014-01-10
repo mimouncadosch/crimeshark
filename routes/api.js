@@ -8,29 +8,29 @@
  * Serve JSON to our AngularJS client
  */
 
-var mongoose = require('mongoose');
-var queryString = require('querystring');
-var request = require('request');
+ var mongoose = require('mongoose');
+ var queryString = require('querystring');
+ var request = require('request');
 
-var mongourl = process.env.MONGOLAB_URI || 
-  'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz' || 
-  'mongodb://localhost/reports'; 
-var localDB = 'mongodb://localhost/reports'; 
-mongoose.connect(localDB);
-var db = mongoose.connection;
+ var mongourl = process.env.MONGOLAB_URI || 
+ 'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz' || 
+ 'mongodb://localhost/reports'; 
+ var localDB = 'mongodb://localhost/reports'; 
+ mongoose.connect(localDB);
+ var db = mongoose.connection;
 
-var reportSchema = mongoose.Schema({
-	createdAt: { type: Date, default: Date.now },
-	title: String,
-	description: String,
-	neighborhood: String,
-	place: String,
-	time: {type: Date},
-	latitude: Number,
-	longitude: Number
-});
+ var reportSchema = mongoose.Schema({
+ 	createdAt: { type: Date, default: Date.now },
+ 	title: String,
+ 	description: String,
+ 	neighborhood: String,
+ 	place: String,
+ 	time: {type: Date},
+ 	latitude: Number,
+ 	longitude: Number
+ });
 
-var Report = db.model('Report', reportSchema);
+ var Report = db.model('Report', reportSchema);
 
 // Write a function that determines the neighborhood and place based on the latitude and longitude
 // exports.create_crime
@@ -75,7 +75,7 @@ exports.show_reports = function(req, res){
 			});
 		}
 	});
-}
+};
 
 
 
