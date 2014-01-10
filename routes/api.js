@@ -13,10 +13,10 @@
  var request = require('request');
 
  var mongourl = process.env.MONGOLAB_URI || 
- 'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz' || 
- 'mongodb://localhost/reports'; 
+ 'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz'; 
+
  var localDB = 'mongodb://localhost/reports'; 
- mongoose.connect(localDB);
+ mongoose.connect(mongourl);
  var db = mongoose.connection;
 
  var reportSchema = mongoose.Schema({
