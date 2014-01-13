@@ -11,8 +11,8 @@
 	</script>
 </head>
 
-<body ng-controller="mainController">
-	<div class="row">
+<body>
+	<div class="row" ng-controller="mainController">
 		<div id="map-canvas" class="col-md-8"></div>
 		<form>
 			<div class="col-md-4">
@@ -31,8 +31,14 @@
 	</form>
 </div>
 
-
-
+<div ng-controller="mapController">
+	<form>
+		<!-- <button type="submit" class="btn btn-primary btn-lg" ng-click="giveCoordinates()">giveCoordinates</button> -->
+		<div ng-model="data.message">
+			{{data.message}}
+		</div>
+	</form>
+</div>
 
 </body>
 <script src="lib/angular/angular.js"></script>

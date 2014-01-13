@@ -61,7 +61,7 @@ exports.create_report = function(req, res){
 				res.send(err);
 			res.json(reports);
 		});
-	});		
+	});                
 };
 
 exports.show_reports = function(req, res){
