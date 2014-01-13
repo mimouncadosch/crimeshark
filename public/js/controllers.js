@@ -11,8 +11,6 @@ function mainController($scope, $http, $rootScope, $location, Data) {
         .error(function(data) {
                 console.log('Error: ' + data);
         });
-
-        // when submitting the add form, send the text to the node API
         $scope.createReport = function() {
                 var real_report = {
                         title: $scope.title,
@@ -49,25 +47,15 @@ function mapController($scope, $http, $rootScope, Data){
         .error(function(data) {
                 console.log('Error: ' + data);
         });
-        // $scope.data = Data;
 
-        // initial locations
-        var beaches = [
-        [ 4.599909958081556, -74.07686233520508],
-        [ 4.601364378475835, -74.06737804412842]
-        ];
-        
-        // returns coordinates of reported locations
-        function returnCoordinates(data, map){
+        // places markers of previous reports in database
+        function setMarkers(data, map){
                 $http.get('/reports')
                 .success(function(data) {
                         $rootScope.reports = data.result;
                         var locations = data.result;
                         for (var i = 0; i < locations.length; i++) {
-                                console.log(i);
                                 var myLatLng = new google.maps.LatLng(locations[i].latitude, locations[i].longitude);
-                                console.log(locations[i].latitude);
-                                console.log(locations[i].longitude);
                                 var marker = new google.maps.Marker({
                                         position: myLatLng,
                                         map: map
@@ -80,14 +68,10 @@ function mapController($scope, $http, $rootScope, Data){
         // used so user can only place one marker at a time
         var markersArray = [];
 
-        // initial location
-        var lat = 4.5981;
-        var lng = -74.0758;
-
         // map options
         var myOptions = {
                 zoom : 15,
-                center : new google.maps.LatLng(lat, lng),
+                center : new google.maps.LatLng(4.5981, -74.0758),
                 mapTypeId : google.maps.MapTypeId.ROADMAP
         };
 
@@ -100,20 +84,8 @@ function mapController($scope, $http, $rootScope, Data){
                         placeMarker(event.latLng);
                 });
 
-                setMarkers(map, beaches);
-                returnCoordinates(data, map);
-        };
-
-        // place initial markers on map
-        function setMarkers(map, locations) {
-                for (var i = 0; i < locations.length; i++) {
-                        var beach = locations[i];
-                        var myLatLng = new google.maps.LatLng(beach[0], beach[1]);
-                        var marker = new google.maps.Marker({
-                                position: myLatLng,
-                                map: map
-                        });
-                }
+                // places markers of previous reports in database
+                setMarkers(data, map);
         };
 
         // delete old marker when new one placeds
