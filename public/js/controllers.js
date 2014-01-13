@@ -6,7 +6,6 @@ function mainController($scope, $http, $rootScope, $location, Data) {
         $http.get('/reports')
         .success(function(data) {
                 $rootScope.reports = data.result;
-                console.log(data.result[32].latitude);
         })
         .error(function(data) {
                 console.log('Error: ' + data);
@@ -48,11 +47,17 @@ function mapController($scope, $http, $rootScope, Data){
                 console.log('Error: ' + data);
         });
 
+        // used so user can only place one marker at a time
+        var markersArray = [];
+
+        // used for database recorded locations
+        var dbMarkers = [];
+        var dbWindows = [];
+
         // places markers of previous reports in database
         function setMarkers(data, map){
                 $http.get('/reports')
                 .success(function(data) {
-                        $rootScope.reports = data.result;
                         var locations = data.result;
                         for (var i = 0; i < locations.length; i++) {
                                 var myLatLng = new google.maps.LatLng(locations[i].latitude, locations[i].longitude);
@@ -60,13 +65,14 @@ function mapController($scope, $http, $rootScope, Data){
                                         position: myLatLng,
                                         map: map
                                 });
+                                var infowindow = new google.maps.InfoWindow({
+                                        content: "Gracias por reportar \n" + locations[i].title + "\n" + locations[i].description
+                                });
+                                console.log(myLatLng.b);
+                                console.log(myLatLng.d);
                         }
-                        return locations;
                 })     
         };
-        
-        // used so user can only place one marker at a time
-        var markersArray = [];
 
         // map options
         var myOptions = {
@@ -83,10 +89,22 @@ function mapController($scope, $http, $rootScope, Data){
                 google.maps.event.addListener(map, 'click', function(event) {
                         placeMarker(event.latLng);
                 });
+            //     google.maps.event.addListener(marker, 'mouseover', function() {
+            //         infowindow.open(map, marker);
+            // }); 
 
                 // places markers of previous reports in database
                 setMarkers(data, map);
+                // console.log(dbMarkers);
+                // console.log(dbWindows);
         };
+
+        // places infowindows on markers
+        // function setWindows(map){
+        //         console.log(dbMarkers);
+        //         console.log(dbWindows);
+        // };
+
 
         // delete old marker when new one placeds
         function deleteOverlays() {
@@ -117,12 +135,7 @@ function mapController($scope, $http, $rootScope, Data){
                 document.getElementById("latitude").value = latitude;
                 document.getElementById("longitude").value = longitude;
                 
-                var coordinates = [latitude, longitude]
-                // console.log(latitude);
-                // console.log(longitude);
                 infowindow.open(map,marker);
-                console.log("Hello I'm in Google Maps placeMarker function");
-                return coordinates;
         };
 
         google.maps.event.addDomListener(window, 'load', initialize);

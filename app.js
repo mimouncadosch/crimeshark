@@ -4,6 +4,7 @@
 
 var express = require('express'),
 	api = require('./routes/api'),
+	routes = require('./routes'),
 	http = require('http'),
 	path = require('path');
 
@@ -19,7 +20,8 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.logger('dev'));
 app.use(express.bodyParser()); 	
 app.use(express.methodOverride()); 	
-//app.use(app.router); – not sure if we need this
+app.use(express.static(path.join(__dirname, 'public')));
+// app.use(app.router);
 
 // development only
 if (app.get('env') === 'development') {
@@ -44,13 +46,15 @@ app.use("/lib", express.static(__dirname + "/public/lib"));
 
 // JSON API
 // app.get('/api/name', api.name);
+app.get('/', routes.index);
+app.get('/home', routes.home);
 app.post('/reports/create', api.create_report);
 app.get('/reports', api.show_reports);
 
 // redirect all others to the index (HTML5 history)
-app.all("/*", function(req, res, next) {
-	res.sendfile("index.html", { root: __dirname + "/public" });
-});
+// app.all("/*", function(req, res, next) {
+// 	res.sendfile("index.html", { root: __dirname + "/public" });
+// });
 
 
 /**
