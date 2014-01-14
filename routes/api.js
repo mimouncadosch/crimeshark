@@ -11,11 +11,11 @@ var passport = require('passport'),
 	GoogleStrategy = require('passport-google').Strategy;
 
 // Reports database
-var mongourl = process.env.MONGOLAB_URI || 
-'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz'; 
+var cloudDB = 'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz'; 
 var localDB = 'mongodb://localhost/reports'; 
 
-mongoose.createConnection(localDB);
+// chose local or modulus.io database
+mongoose.createConnection(cloudDB);
 var db = mongoose.connection;
 
 var reportSchema = mongoose.Schema({

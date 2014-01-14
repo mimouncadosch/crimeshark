@@ -1,7 +1,3 @@
-// Sources: 
-// http://mherman.org/blog/2013/11/10/social-authentication-with-passport-dot-js/
-// https://github.com/mjhea0/passport-google-openid
-
 /**
  * Module dependencies
  */
@@ -18,8 +14,11 @@
  // var http = require('http');
  var auth = require('./authentication.js');
 
+var cloudDB = 'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/ge2dAsyb'; 
+var localDB = 'mongodb://localhost/users'; 
+
 // connect to the database
-mongoose.connect('mongodb://localhost/users');
+mongoose.connect(cloudDB);
 
 var app = express();
 
@@ -137,3 +136,7 @@ function ensureAuthenticated(req, res, next) {
 
 
 module.exports = app
+
+// Sources: 
+// http://mherman.org/blog/2013/11/10/social-authentication-with-passport-dot-js/
+// https://github.com/mjhea0/passport-google-openid
