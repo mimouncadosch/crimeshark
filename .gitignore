@@ -4,6 +4,6 @@
 .idea/
 .sass-cache
 *~
-node_modules
 *.out
 oauth.js
+node_modules
