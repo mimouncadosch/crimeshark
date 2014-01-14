@@ -1,15 +1,16 @@
 /*
  * GET home page.
  */
+var path = require("path");
 
-exports.index = function(req, res){
- 	res.render('index');
+exports.map = function(req, res){
+ 	res.render('map');
  };
 
 exports.home = function(req, res){
-	res.render('home.html');
+	res.render('home');
 };
 
 exports.account = function(req, res){
-	res.render('account.html');
+	res.render('account');
 };

@@ -15,8 +15,8 @@ var ids = {
 	// 	callbackURL: "http://127.0.0.1:1337/auth/github/callback"
 	// },
 	google: {
-		returnURL: 'http://localhost:3000/auth/google/callback',
-		realm: 'http://localhost:3000'
+		returnURL: 'http://127.0.0.1:1337/auth/google/callback',
+		realm: 'http://127.0.0.1:1337/'
 	}
 }
 

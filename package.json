@@ -1,20 +1,25 @@
 {
-	"name": "application-name",
+	"name": "CrimeShark",
 	"version": "0.0.1",
-	"private"		: true,
-	"dependencies"	: {
-		"express": "*",
-		"ejs" : "~0.8.5",
-		"mongoose": "*",
-		"querystring": "*",
-		"request": "*",
-		"passport" : "~0.1.17", 		
-		"passport-local" : "~0.1.6", 	
-		"passport-facebook" : "~1.0.2", 
-		"passport-twitter" : "~1.0.2", 	
-		"passport-google": "~0.3.0",
-		"passport-google-oauth" : "~0.1.5",
-		"connect-flash" : "~0.1.1", 	
-		"bcrypt-nodejs" : "latest" 		
+	"main": "app.js",
+	"scripts": {
+		"start": "node app.js",
+		"test": "make test"
+		},
+		"author": "Mimoun P Cadosch Delmar <@MPCadosch>"
+		"dependencies"	: {
+			"express": "*",
+			"ejs" : "~0.8.5",
+			"mongoose": "*",
+			"querystring": "*",
+			"request": "*",
+			"passport" : "~0.1.17", 		
+			"passport-google": "~0.3.0",
+			"passport-twitter" : "~1.0.2",
+			"mocha": "~1.14.0",
+			"should": "~2.0.2",
+			"chai": "~1.8.1",
+			"phantom": "~0.5.4",
+			"zombie": "~2.0.0-alpha24"
+		}
 	}
-}

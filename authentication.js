@@ -4,10 +4,10 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 var User = require('./models/user.js')
 var config = require('./oauth.js')
 
+// config
 passport.use(new GoogleStrategy({
 	returnURL: config.google.returnURL,
-	realm: config.google.realm,
-	stateless: true
+	realm: config.google.realm
 },
 function(accessToken, refreshToken, profile, done) {
 	User.findOne({ oauthID: profile.id }, function(err, user) {

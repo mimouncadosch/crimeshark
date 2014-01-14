@@ -1,4 +1,7 @@
-// Source: http://mherman.org/blog/2013/11/10/social-authentication-with-passport-dot-js/
+// Sources: 
+// http://mherman.org/blog/2013/11/10/social-authentication-with-passport-dot-js/
+// https://github.com/mjhea0/passport-google-openid
+
 /**
  * Module dependencies
  */
@@ -12,48 +15,37 @@
  var User = require('./models/user.js');
  var mongoose = require('mongoose');
  var passport = require('passport');
- var http = require('http');
+ // var http = require('http');
  var auth = require('./authentication.js');
 
 // connect to the database
-mongoose.createConnection('mongodb://localhost/users');
+mongoose.connect('mongodb://localhost/users');
 
-var app = module.exports = express();
+var app = express();
 
 /**
  * Configuration
  */
 
-// // all environments
+// all environments
 // app.set('port', process.env.PORT || 3000);
-// app.use(express.logger('dev'));
-// app.use(express.bodyParser()); 	
-// app.use(express.methodOverride()); 	
-// app.use(express.cookieParser('your secret here'));
-// app.use(express.session())
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(app.router);
-// app.use(express.static(path.join(__dirname, 'public')));
-// app.set('views', __dirname + '/views');
-// app.engine('html', require('ejs').renderFile);
+app.use(express.logger('dev'));
+app.use(express.bodyParser()); 	
+app.use(express.methodOverride()); 	
+app.use(express.cookieParser('your secret here'));
+app.use(express.session())
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(app.router);
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', __dirname + '/views');
+app.engine('html', require('ejs').renderFile);
 
-
-app.configure(function() {
-	app.set('port', process.env.PORT || 3000);
-	app.set('views', __dirname + '/views');
-	app.set('view engine', 'html');
-	app.engine('html', require('ejs').renderFile);
-	app.use(express.logger('dev'));
-	app.use(express.cookieParser());
-	app.use(express.bodyParser());
-	app.use(express.methodOverride());
-	app.use(express.session({ secret: 'my_precious' }));
-	app.use(passport.initialize());
-	app.use(passport.session());
-	app.use(app.router);
-	app.use(express.static(path.join(__dirname, 'public')));
-});
+// serve all asset files from necessary directories
+app.use("/js", express.static(__dirname + "/public/js"));
+app.use("/css", express.static(__dirname + "/public/css"));
+app.use("/partials", express.static(__dirname + "/public/partials"));
+app.use("/lib", express.static(__dirname + "/public/lib"));
 
 // development only
 if (app.get('env') === 'development') {
@@ -64,24 +56,40 @@ if (app.get('env') === 'production') {
 	// TODO
 };
 
-// serialize and deserialize
+// seralize and deseralize
 passport.serializeUser(function(user, done) {
-	done(null, user);
+    console.log('serializeUser: ' + user._id)
+    done(null, user._id);
 });
-passport.deserializeUser(function(obj, done) {
-	done(null, obj);
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user){
+        console.log(user)
+        if(!err) done(null, user);
+        else done(err, null)  
+    })
 });
 
 /**
  * Routes
  */
 
-// serve all asset files from necessary directories
-app.use("/js", express.static(__dirname + "/public/js"));
-app.use("/css", express.static(__dirname + "/public/css"));
-app.use("/partials", express.static(__dirname + "/public/partials"));
-app.use("/lib", express.static(__dirname + "/public/lib"));
-
+// user routes
+app.get("/", function(req, res) {
+	res.sendfile("home.html", { root: __dirname + "/public" });
+});
+app.get('/', routes.map);
+app.get('/home', routes.home);
+app.post('/reports/create', api.create_report);
+app.get('/reports', api.show_reports);
+app.get('/account', ensureAuthenticated, function(req, res){
+	User.findById(req.session.passport.user, function(err, user) {
+		if(err) {
+			console.log(err);
+		} else {
+			res.render('account', { user: user});
+		};
+	});
+});
 
 // Google authentication routing
 app.get('/auth/google', 
@@ -99,21 +107,6 @@ app.get('/logout', function(req, res){
 });
 
 
-// user routes
-app.get('/', routes.index);
-app.get('/home', routes.home);
-app.post('/reports/create', api.create_report);
-app.get('/reports', api.show_reports);
-app.get('/account', ensureAuthenticated, function(req, res){
-	User.findById(req.session.passport.user, function(err, user) {
-		if(err) {
-			console.log(err);
-		} else {
-			res.render('account.html', { user: user});
-		};
-	});
-});
-
 // Twitter authentication routing
 app.get('/auth/twitter',
 	passport.authenticate('twitter'),
@@ -122,10 +115,11 @@ app.get('/auth/twitter',
 app.get('/auth/twitter/callback',
 	passport.authenticate('twitter', { failureRedirect: '/' }),
 	function(req, res) {
-		res.redirect('/account');
+		res.redirect('/account.html');
 	});
 
-//
+// port
+app.listen(1337);
 
 // test authentication
 function ensureAuthenticated(req, res, next) {
@@ -133,12 +127,11 @@ function ensureAuthenticated(req, res, next) {
 	res.redirect('/')
 }
 
-/**
- * Start Server
- */
- http.createServer(app).listen(app.get('port'), function () {
- 	console.log('Express server listening on port ' + app.get('port'));
- });
+// start server
+ // http.createServer(app).listen(app.get('port'), function () {
+ // 	console.log('Express server listening on port ' + app.get('port'));
+ // });
 
 
- module.exports = app
+
+module.exports = app

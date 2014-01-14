@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose')
 
 // create a user model
 var User = mongoose.model('User', {
@@ -6,5 +6,6 @@ var User = mongoose.model('User', {
 	name: String,
 	created: Date
 });
+
 
 module.exports = User;
