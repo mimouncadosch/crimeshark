@@ -1,40 +1,37 @@
 //The API of your application
 
-/**
- * This function is called when the app makes an http GET request to /api/getHere
- * @see app.js, line 25
- */
 /*
- * Serve JSON to our AngularJS client
- */
+* Serve JSON to our AngularJS client
+*/
 
- var mongoose = require('mongoose');
- var queryString = require('querystring');
- var request = require('request');
+var mongoose = require('mongoose');
+var queryString = require('querystring');
+var request = require('request');
+var passport = require('passport'),
+	GoogleStrategy = require('passport-google').Strategy;
 
- var mongourl = process.env.MONGOLAB_URI || 
- 'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz'; 
+// Reports database
+var mongourl = process.env.MONGOLAB_URI || 
+'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz'; 
+var localDB = 'mongodb://localhost/reports'; 
 
- var localDB = 'mongodb://localhost/reports'; 
- mongoose.connect(mongourl);
- var db = mongoose.connection;
+mongoose.createConnection(localDB);
+var db = mongoose.connection;
 
- var reportSchema = mongoose.Schema({
- 	createdAt: { type: Date, default: Date.now },
- 	title: String,
- 	description: String,
- 	neighborhood: String,
- 	place: String,
- 	time: {type: Date},
- 	latitude: Number,
- 	longitude: Number
- });
-
- var Report = db.model('Report', reportSchema);
+var reportSchema = mongoose.Schema({
+	createdAt: { type: Date, default: Date.now },
+	title: String,
+	description: String,
+	neighborhood: String,
+	place: String,
+	time: {type: Date},
+	latitude: Number,
+	longitude: Number
+});
+var Report = db.model('Report', reportSchema);
 
 // Write a function that determines the neighborhood and place based on the latitude and longitude
 // exports.create_crime
-
 exports.create_report = function(req, res){
 	console.log("I'm in the create_report'");
 	console.log(objParams);
