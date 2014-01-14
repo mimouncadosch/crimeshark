@@ -1,7 +1,6 @@
 /*
  * GET home page.
  */
-var path = require("path");
 
 exports.map = function(req, res){
  	res.render('map');

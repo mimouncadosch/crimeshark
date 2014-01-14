@@ -33,7 +33,9 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser()); 	
 app.use(express.methodOverride()); 	
 app.use(express.cookieParser('your secret here'));
-app.use(express.session())
+app.use(express.session({
+	secret: 'mi secreto'
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
@@ -77,7 +79,6 @@ passport.deserializeUser(function(id, done) {
 app.get("/", function(req, res) {
 	res.sendfile("home.html", { root: __dirname + "/public" });
 });
-app.get('/', routes.map);
 app.get('/home', routes.home);
 app.post('/reports/create', api.create_report);
 app.get('/reports', api.show_reports);
@@ -117,6 +118,7 @@ app.get('/auth/twitter/callback',
 	function(req, res) {
 		res.redirect('/account.html');
 	});
+
 
 // port
 app.listen(1337);
