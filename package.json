@@ -6,7 +6,7 @@
 		"start": "node app.js",
 		"test": "make test"
 		},
-		"author": "Mimoun P Cadosch Delmar <@MPCadosch>"
+		"author": "Mimoun P Cadosch Delmar <@MPCadosch>",
 		"dependencies"	: {
 			"express": "*",
 			"ejs" : "~0.8.5",
