@@ -18,7 +18,7 @@ var cloudDB = 'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/ge2dA
 var localDB = 'mongodb://localhost/users'; 
 
 // connect to the database
-mongoose.connect(cloudDB);
+mongoose.connect(localDB);
 
 var app = express();
 

@@ -15,7 +15,7 @@ var cloudDB = 'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5yty
 var localDB = 'mongodb://localhost/reports'; 
 
 // chose local or modulus.io database
-mongoose.createConnection(cloudDB);
+mongoose.createConnection(localDB);
 var db = mongoose.connection;
 
 var reportSchema = mongoose.Schema({
