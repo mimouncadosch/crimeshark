@@ -5,8 +5,8 @@ var http = require('http');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var routes = require('./routes');
-var api = require('./routes/api');
+var routes = require('./routes/authAPI');
+var api = require('./routes/reportAPI');
 var engines = require('consolidate');
 var Account = require('./models/account');
 var app = express();
@@ -49,7 +49,7 @@ var localDB = 'mongodb://localhost/accounts';
 mongoose.connect(localDB);
 
 // routes
-require('./routes')(app);
+require('./routes/authAPI')(app);
 
 // API routes
 app.post('/reports/create', api.create_report);
