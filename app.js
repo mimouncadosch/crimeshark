@@ -1,59 +1,77 @@
-/* Module Dependencies */
-var path = require('path');
-var express = require('express');
-var http = require('http');
-var mongoose = require('mongoose');
-var passport = require('passport');
-var routes = require('./routes/authAPI');
-var api = require('./routes/reportAPI');
-var engines = require('consolidate');
-var User = require('./models/user');
-var app = express();
+/**
+ * Module dependencies
+ */
 
-/* Configuration */
-var app = express();
-app.set('port', process.env.PORT || 1337);
-app.set('views', __dirname + '/public/views');
-app.set('view options', { layout: false });
-app.use(express.logger());
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
-app.use(express.session());
+var express = require('express'),
+	mongoose = require('mongoose'),
+	passport = require('passport'),
+	api = require('./routes/api'),
+	http = require('http'),
+	path = require('path'),
+	port        = process.env.PORT || 3000;
+
+var app = module.exports = express();
+var configDB = require('./config/database.js');
+
+/**
+ * Configuration
+ */
+
+// all environments
+app.use(express.logger('dev')); // log every request to the console
+app.use(express.bodyParser()); 	// get information from html forms
+app.use(express.cookieParser()); // read cookies (needed for user authorization)
+app.use(express.methodOverride()); 	
+
+// required for 'passport' which handles our user authorization
+
+// session secret: used to compute the hash for a session.
+// prevents session tampering
+app.use(express.session({ secret: 'america'}));
 app.use(passport.initialize());
-app.use(passport.session());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
-app.engine('html', engines.mustache);
-app.set('view engine', 'html');
-app.use("/partials", express.static(__dirname + "/public/partials"));
+app.use(passport.session()); // enables persistent login sessions
 
-app.configure('development', function(){
-	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function(){
+// development only
+if (app.get('env') === 'development') {
 	app.use(express.errorHandler());
+}
+
+// production only
+if (app.get('env') === 'production') {
+	// TODO
+};
+
+
+/**
+ * Routes
+ */
+
+// serve all asset files from necessary directories
+app.use("/js", express.static(__dirname + "/public/js"));
+app.use("/css", express.static(__dirname + "/public/css"));
+app.use("/partials", express.static(__dirname + "/public/partials"));
+app.use("/lib", express.static(__dirname + "/public/lib"));
+
+// load user API and pass in our express app and fully configured passport
+require('./api/authenticationAPI.js')(app, passport); 
+// load crime API and pass in our express app
+require('./api/crimeAPI.js')(app);
+// load user API and pass in our express app
+require('./api/userAPI.js')(app);
+
+// JSON API
+app.get('/api/name', api.name);
+
+// redirect all others to the index (HTML5 history)
+app.all("/*", function(req, res, next) {
+	res.sendfile("index.html", { root: __dirname + "/public" });
 });
 
-/* Passport Config */
-// passport.use(new LocalStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
 
-// mongoose
-// Users database
-var cloudDB = 'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/ge2dAsyb'; 
-var localDB = 'mongodb://localhost/users'; 
-mongoose.connect(localDB);
+/**
+ * Start Server
+ */
 
-// routes
-require('./routes/authAPI')(app, passport);
-
-// API routes
-app.post('/reports/create', api.create_report);
-app.get('/reports', api.show_reports);
-
-app.listen(app.get('port'), function(){
-	console.log(("Express server listening on port " + app.get('port')))
-});
+//In your browser, go to http://localhost:<port>
+app.listen(port);
+console.log("Listening on port " + port);

@@ -8,28 +8,20 @@ angular.module('myApp', [
 	'myApp.filters',
 	'myApp.services',
 	'myApp.directives'
-	]).
+]).
 config(function ($routeProvider, $locationProvider) {
 	$routeProvider.
-	when('/', {
-		templateUrl: 'partials/landing.html',
-		controller: 'homeController',
-	}).
-	when('/register', {
-		templateUrl: 'partials/register.html',
-		controller: 'homeController',
-	}).
-	// when('/login', {
-	// 	templateUrl: 'views/partials/login.html',
-	// 	controller: 'homeController'
-	// }).
-	// when('/register', {
-	// 	templateUrl: 'views/partials/register.html',
-	// 	controller: 'homeController'
-	// }).
-	otherwise({
-		redirectTo: '/view1'
-	});
+		when('/view1', {
+			templateUrl: 'partials/partial1.html',
+			controller: 'MyCtrl1'
+		}).
+		when('/view2', {
+			templateUrl: 'partials/partial2.html',
+			controller: 'MyCtrl2'
+		}).
+			otherwise({
+			redirectTo: '/view1'
+		});
 
-$locationProvider.html5Mode(true);
+	$locationProvider.html5Mode(true);
 });
