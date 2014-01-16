@@ -4,11 +4,10 @@ var express = require('express');
 var http = require('http');
 var mongoose = require('mongoose');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 var routes = require('./routes/authAPI');
 var api = require('./routes/reportAPI');
 var engines = require('consolidate');
-var Account = require('./models/account');
+var User = require('./models/user');
 var app = express();
 
 /* Configuration */
@@ -38,18 +37,18 @@ app.configure('production', function(){
 });
 
 /* Passport Config */
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
+// passport.use(new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
 // mongoose
-// Accounts database
+// Users database
 var cloudDB = 'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/ge2dAsyb'; 
-var localDB = 'mongodb://localhost/accounts'; 
+var localDB = 'mongodb://localhost/users'; 
 mongoose.connect(localDB);
 
 // routes
-require('./routes/authAPI')(app);
+require('./routes/authAPI')(app, passport);
 
 // API routes
 app.post('/reports/create', api.create_report);

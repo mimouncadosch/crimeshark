@@ -2,9 +2,9 @@
 
 // Declare dependencies
 var passport = require('passport');
-var Account = require('../models/account');
+var Users = require('../models/user');
 
-module.exports = function (app) {
+module.exports = function (app, passport) {
 
   app.get('/', function (req, res) {
     res.render('home', { user : req.user });
@@ -17,7 +17,7 @@ module.exports = function (app) {
   });
 
   app.post('/register', function(req, res) {
-    Account.register(new Account({ username : req.body.username, phone_number: req.body.phone_number}), req.body.password, function(err, account) {
+    User.register(new User({ username : req.body.username, phone_number: req.body.phone_number}), req.body.password, function(err, user) {
       if (err) {
         return res.render("register", {info: "Sorry. That username already exists. Try again."});
       }
@@ -49,7 +49,7 @@ module.exports = function (app) {
   });
 
   app.post('/register', function(req, res) {
-    Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
+    User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
       if (err) {
         return res.render("register.html", {info: "Sorry. That username already exists. Try again."});
       }
@@ -62,13 +62,13 @@ module.exports = function (app) {
 
 
   //////// USING ANGULAR ////////
-  app.post('/routess/signup', passport.authenticate('local', {
-    successRedirect : '/routes/isLoggedin', // redirect to the secure profile section
+  app.post('/api/signup', passport.authenticate('local-signup', {
+    successRedirect : '/api/isLoggedin', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
 
-  app.get('/routes/isLoggedin', isLoggedIn, function(req, res) {
+  app.get('/api/isLoggedin', isLoggedIn, function(req, res) {
     console.log('backend prof page');
     res.json(req.user);
     // get the user JSON object out of session and pass to template
@@ -81,11 +81,11 @@ module.exports = function (app) {
  * checks if user has already been authenticated to maintain persistent sessions
  * @return {Boolean}
  */
-function isLoggedIn(req, res, next) {
+ function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
-        return next();
+      return next();
     else {
       console.log('user not logged in');
       res.end();
@@ -95,4 +95,4 @@ function isLoggedIn(req, res, next) {
     //req.flash('notLoggedIn', 'You are no longer logged in');
     //res.redirect('/login');
     
-}
+  }

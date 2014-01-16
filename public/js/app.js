@@ -11,8 +11,12 @@ angular.module('myApp', [
 	]).
 config(function ($routeProvider, $locationProvider) {
 	$routeProvider.
+	when('/', {
+		templateUrl: 'partials/landing.html',
+		controller: 'homeController',
+	}).
 	when('/register', {
-		templateUrl: 'register.html',
+		templateUrl: 'partials/register.html',
 		controller: 'homeController',
 	}).
 	// when('/login', {

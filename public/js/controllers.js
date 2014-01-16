@@ -1,21 +1,33 @@
 /* Controllers */
 var myApp = angular.module('myApp.controllers', []);
 
-function homeController($scope) {
+function homeController($scope, $http, $location) {
     $scope.signup = function() {
-       $http({
-        method: 'POST',
-        url: '/api/signup',
-        params: $scope.user
-        }).success(function (data, status, headers, config) {
-                    // Saves the user to rootScope
-                    $rootScope.user = data;
-                    console.log('redirect to prof. frontend');
-                    $location.path("/");
-        }).error(function (data, status, headers, config) {
-                    console.log('error');
-        });
-    };
+        var user_info = {
+            username: $scope.username,
+            email: $scope.email,
+            password: $scope.password,
+            telephone: $scope.telephone
+        };
+        console.log(user_info.username);       
+        console.log(user_info.email);       
+        console.log(user_info.password);       
+        console.log(user_info.telephone);       
+
+        $http({
+            method: 'POST',
+            url: '/api/signup',
+            params: user_info
+        }).
+        success(function (data, status, headers, config) {
+            $rootScope.user = data;
+            console.log('redirect to prof. frontend');
+            $location.path("/");
+        })
+        .error(function (data, status, headers, config) {
+            console.log('error');
+            });
+        };
 }
 
 function mainController($scope, $http, $rootScope, $location, Data) {
