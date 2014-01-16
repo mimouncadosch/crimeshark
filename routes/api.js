@@ -1,4 +1,4 @@
-/* This file contains the API for the reports */
+/* This file contains the API for creating reports */
 
 // Declare dependencies
 var path = require('path');
