@@ -1,19 +1,24 @@
-/* Serve JSON to our AngularJS client */
+/* This file contains the API for the reports */
+
+// Declare dependencies
 var path = require('path');
 var mongoose = require('mongoose');
 var queryString = require('querystring');
 var request = require('request');
 var routes = require('../routes');
 
+// Import Report model
 var Report = require('../models/report');
 
-// mongoose
+// Configuration with mongoose
 var cloudDB = 'mongodb://mimouncadosch:believe18@mongo.onmodulus.net:27017/g5ytyWaz'; 
 var localDB = 'mongodb://localhost/reports';
 mongoose.createConnection(localDB);
 
-// Write a function that determines the neighborhood and place based on the latitude and longitude
+// To Do: Write a function that determines the neighborhood and place based on the latitude and longitude
 // exports.create_crime
+
+// Creates report
 exports.create_report = function(req, res){
 	console.log("I'm in the create_report'");
 	console.log(objParams);
@@ -43,6 +48,7 @@ exports.create_report = function(req, res){
 	});                
 };
 
+// Shows reports
 exports.show_reports = function(req, res){
 	Report.find(function(err, result) {
 		if(err) {
@@ -55,7 +61,3 @@ exports.show_reports = function(req, res){
 		}
 	});
 };
-
-
-
-

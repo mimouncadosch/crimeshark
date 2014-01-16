@@ -1,6 +1,9 @@
 /* Controllers */
 var myApp = angular.module('myApp.controllers', []);
 
+function homeController($scope) {
+}
+
 function mainController($scope, $http, $rootScope, $location, Data) {
         $scope.newReport = {};
         $http.get('/reports')

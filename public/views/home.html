@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en" class="no-js" ng-app="myApp">
 <head>
 	<title>CrimeShark</title>
 	<meta charset="UTF-8" />
@@ -18,7 +18,7 @@
 
 </head>
 <body>
-	<div class="container">
+	<div class="container" ng-controller="homeController">
 		<ul id="gn-menu" class="gn-menu-main">
 			<li class="gn-trigger">
 				<a class="gn-icon gn-icon-menu"><span>Menu</span></a>
@@ -55,24 +55,26 @@
 			<li><a class="codrops-icon codrops-icon-drop" href="/auth/google"><span>Log In</span></a></li>
 		</ul>
 		<header>
-			<h1>CrimeShark <span>Collaborative Neighborhood Surveillance <a href="/auth/google">Sign In</a> with Google</span></h1>
-			<script type="text/javascript">
-			if (user) {
-				document.getElementById('login').style.display = ""
-			} else {
-				document.getElementById('logout').style.display = ""
-			}
-			</script>
-			<a id="login" href="/login">Login<br><a href="/register">Register</a></a>
-			<a id="logout" href="/logout">Logout</a></p>
+			<!--The partials are embeded in the ng-view div-->
+			<div ng-view></div>
 		</header> 
 	</div><!-- /container -->
+	
 	<script src="js/classie.js"></script>
 	<script src="js/gnmenu.js"></script>
+	
 	<script>
 	new gnMenu( document.getElementById( 'gn-menu' ) );
 	</script>
 </body>
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular/angular-route.js"></script>
+<script src="js/app.js"></script>
+<script src="js/services.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/directives.js"></script>
+<script scr="js/bootstrap.js"></script>
 	<!-- <footer>
 		Design inspired by Codrops <a href="http://tympanus.net/Tutorials/GoogleNexusWebsiteMenu/">
 	</footer> -->

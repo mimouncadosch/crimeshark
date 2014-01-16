@@ -7,13 +7,14 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var routes = require('./routes');
 var api = require('./routes/api');
+var engines = require('consolidate');
+var Account = require('./models/account');
 var app = express();
 
 /* Configuration */
 var app = express();
 app.set('port', process.env.PORT || 1337);
-app.set('views', __dirname + 'public/views');
-// app.set('view engine', 'jade');
+app.set('views', __dirname + '/public/views');
 app.set('view options', { layout: false });
 app.use(express.logger());
 app.use(express.bodyParser());
@@ -24,7 +25,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(__dirname + '/public/views'));
+app.engine('html', engines.mustache);
+app.set('view engine', 'html');
+app.use("/partials", express.static(__dirname + "/public/partials"));
 
 app.configure('development', function(){
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
@@ -35,7 +38,6 @@ app.configure('production', function(){
 });
 
 /* Passport Config */
-var Account = require('./models/account');
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());

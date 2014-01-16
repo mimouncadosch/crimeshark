@@ -11,9 +11,9 @@ angular.module('myApp', [
 	]).
 config(function ($routeProvider, $locationProvider) {
 	$routeProvider.
-	when('/view1', {
-		templateUrl: 'partials/partial1.html',
-		controller: 'MyCtrl1'
+	when('/', {
+		templateUrl: 'partials/landing.html',
+		controller: 'homeController'
 	}).
 	when('/view2', {
 		templateUrl: 'partials/partial2.html',
