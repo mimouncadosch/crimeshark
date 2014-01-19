@@ -2,7 +2,7 @@
 
 // Load our models
 var User = require('./models/user'),
-Crime     = require('./models/crime');
+Crime     = require('./models/report');
 
 /**
  *  Aggregation strategies:
@@ -26,12 +26,12 @@ module.exports = function(app) {
 		});
 	});
 
-	// get array of all crimes a user has ever posted
-	app.get('/api/user/:id/crimes', function(req, res) {
+	// get array of all reports a user has ever posted
+	app.get('/api/user/:id/reports', function(req, res) {
 		getUser(req.params.id)
-		.select('crimes')
+		.select('reports')
 		.exec(function(err, user) {
-			res.json(user.crimes);
+			res.json(user.reports);
 		});
 	});
 };

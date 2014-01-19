@@ -8,10 +8,7 @@ bcrypt = require('bcrypt-nodejs');
 // define the schema for our user model
 var userSchema =  new Schema({
 	// GLOBALS
-	firstname: String,
-	lastname : String,
-	// Need validation for UNI
-	UNI      : String,
+	name	: String,
 	// Need validation for phone #
 	phone	 : String,
 
@@ -20,7 +17,7 @@ var userSchema =  new Schema({
 		email    : String,
 		password : String
 	},
-	crimes 		   : [{type: Number, ref: 'User'}]
+	reports : [{type: Number, ref: 'User'}]
 });
 
 // methods =============================
