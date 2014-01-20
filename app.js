@@ -5,7 +5,7 @@
 var express = require('express'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
-	api = require('./routes/api'),
+	//api = require('./routes/api'),
 	http = require('http'),
 	path = require('path'),
 	port        = process.env.PORT || 3000;
@@ -17,11 +17,14 @@ var configDB = require('./config/database.js');
  * Configuration
  */
 
+mongoose.connect(configDB.url); // connect to our database
+require('./config/passport')(passport);
+
 // all environments
 app.use(express.logger('dev')); // log every request to the console
 app.use(express.bodyParser()); 	// get information from html forms
 app.use(express.cookieParser()); // read cookies (needed for user authorization)
-app.use(express.methodOverride()); 	
+//app.use(express.methodOverride()); //not sure we need this
 
 // required for 'passport' which handles our user authorization
 
@@ -41,7 +44,6 @@ if (app.get('env') === 'production') {
 	// TODO
 };
 
-
 /**
  * Routes
  */
@@ -54,13 +56,11 @@ app.use("/lib", express.static(__dirname + "/public/lib"));
 
 // load user API and pass in our express app and fully configured passport
 require('./api/authenticationAPI.js')(app, passport); 
-// load crime API and pass in our express app
-require('./api/crimeAPI.js')(app);
+// load crime report API and pass in our express app
+require('./api/reportAPI.js')(app);
 // load user API and pass in our express app
 require('./api/userAPI.js')(app);
 
-// JSON API
-app.get('/api/name', api.name);
 
 // redirect all others to the index (HTML5 history)
 app.all("/*", function(req, res, next) {
