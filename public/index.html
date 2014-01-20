@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html ng-app="myApp">
-	<head>
-		<meta charset="utf8">
-		<base href="/">
-		<title>Safety Shark</title>
-		<link rel="stylesheet" href="css/app.css">
-	</head>
-	<body>
-		<div ng-controller="AppCtrl">
+<head>
+	<meta charset="utf8">
+	<base href="/">
+	<title>Safety Shark</title>
+	<link rel="stylesheet" href="css/app.css">
+	<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?libraries=drawing&key=AIzaSyBiNAReClZyBgsJxbYR5Al_xpC6DtLat7Y&sensor=false">
+	</script>
+</head>
+<body>
+	<div ng-controller="AppCtrl">
 		<!--The double brackets refer to the $scope.name variable in public/js/controllers.js-->
 		<h2>Safety Shark</h2>
 		<ul class="menu">
-		<li><a href="signup">signup</a></li>
-		<li><a href="login">login</a></li>
+			<li><a href="signup">signup</a></li>
+			<li><a href="login">login</a></li>
 		</ul>
 		<!--The partials are embeded in the ng-view div-->
 		<div ng-view></div>
-		</div>
-	</body>
-	<script src="lib/angular/angular.js"></script>
-	<script src="lib/angular/angular-route.js"></script>
-	<script src="js/app.js"></script>
-	<script src="js/services.js"></script>
-	<script src="js/controllers.js"></script>
-	<script src="js/filters.js"></script>
-	<script src="js/directives.js"></script>
+	</div>
+</body>
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular/angular-route.js"></script>
+<script src="js/app.js"></script>
+<script src="js/services.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/directives.js"></script>
 </html>
