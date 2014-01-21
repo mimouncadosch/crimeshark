@@ -63,7 +63,8 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location) {
 controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 		// Makes sure the app already recognizes the user is logged in
 		// If not, it redirects to the login page
-		console.log($rootScope.user);
+		// $rootScope.user = {};
+		// console.log($rootScope.user);
 		if(!$rootScope.user) {
 			/**
 			 * Makes an http GET request to the backend
@@ -85,13 +86,72 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 			}).error(function (data, status, headers, config) {
 				console.log('error');
 			});
-
-			// $http({
-			// 	method: 'GET',
-			// 	url: ''
-			// })
 		}
-	}).
+
+		var locations = $rootScope.user.perimeter;
+		// console.log(locations);
+
+		// retrieves points from user's safety perimeter in database
+	    function createCoordinatesArray(){
+	    		var polygonCoordinates = [];
+	    		// i is each point in the locations array
+	    		for (var i = 0; i < locations.length; i++){
+	    			var latitude = locations[i].d;
+	    			var longitude = locations[i].e;
+	    			polygonCoordinates.push(new google.maps.LatLng(latitude, longitude));
+	    		}
+	    		return polygonCoordinates;
+	    };
+	    var polygonCoordinates = createCoordinatesArray();
+	    console.log(polygonCoordinates);
+
+	    // Find center of polygon: find average latitude and longitude
+	    var sumLatitudes = 0;
+	    var sumLongitudes = 0;
+	    for (var i = 0; i < polygonCoordinates.length; i++){
+	    	sumLatitudes = sumLatitudes + polygonCoordinates[i].d;
+	    	sumLongitudes = sumLongitudes + polygonCoordinates[i].e;
+	    }
+	    var averageLatitude = sumLatitudes / (polygonCoordinates.length);
+	    var averageLongitude = sumLongitudes / (polygonCoordinates.length);
+
+	    console.log(averageLatitude);
+		console.log(averageLongitude);	    
+
+		var perimeter = new google.maps.Polygon({
+			paths : polygonCoordinates,
+			strokeOpacity: 0.8,
+			strokeWeight: 2,
+			fillColor: '#FF0000',
+			fillOpacity: 0.35
+		});
+		console.log(perimeter);
+	
+	    // map options
+	    var myOptions = {
+	        zoom : 12,
+	        center : new google.maps.LatLng(averageLatitude, averageLongitude),
+	        mapTypeId : google.maps.MapTypeId.ROADMAP
+	    };
+
+		// new map
+		var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
+	    
+	    // show polygon on map
+	    perimeter.setMap(map);
+
+	    // adjust map to perimeter
+	    var bounds = new google.maps.LatLngBounds();
+		for (var i = 0; i < polygonCoordinates.length; i++) {
+  			bounds.extend (polygonCoordinates[i]);
+		}
+	    map.fitBounds(bounds);
+
+	    function initialize(map_id, data) {	
+	    };
+
+	    google.maps.event.addDomListener(window, 'load', initialize);
+}).
 controller('mapCtrl', function ($scope, $rootScope, $http, $location, Data){
 	$http.get('/reports')
 	.success(function(data) {
