@@ -82,6 +82,11 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 			}).error(function (data, status, headers, config) {
 				console.log('error');
 			});
+
+			// $http({
+			// 	method: 'GET',
+			// 	url: ''
+			// })
 		}
 	}).
 controller('mapCtrl', function ($scope, $rootScope, $http, $location, Data){
@@ -238,3 +243,6 @@ controller('perimeterCtrl', function ($scope, $rootScope, $http, $location, Data
 	var perimeter = addPolygonListener();	
 	$rootScope.user.perimeter = perimeter;
 });
+
+
+// Sources: http://snippetlib.com/google_maps/drawing_tools
