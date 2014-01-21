@@ -1,3 +1,5 @@
+<div id="map-canvas"></div>
+
 <form ng-submit="signup()">
 	<label for="name" >Name : <input type="text" id="name" ng-model="user.name"></label><br>
 	<label for="email" >Email : <input type="email" id="email" ng-model="user.email"></label><br>
@@ -8,3 +10,6 @@
 	Email: <input type="checkbox" ng-model="user.contact.email"> <br/>
 	<input type="submit" value="Sign Up">
 </form>
+
+<div ng-controller="perimeterCtrl">
+</div>
