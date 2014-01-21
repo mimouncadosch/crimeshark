@@ -11,13 +11,17 @@ var userSchema =  new Schema({
 	name	: String,
 	// Need validation for phone #
 	phone	 : String,
-
+	contact : {
+		sms : Boolean,
+		email : Boolean
+	},
 	// AUTHORIZATION
 	local	     : {
 		email    : String,
 		password : String
 	},
-	reports : [{type: Number, ref: 'User'}]
+	reports : [{type: Number, ref: 'User'}],
+	perimeter : [{lat: Number, lng: Number}]
 });
 
 // methods =============================

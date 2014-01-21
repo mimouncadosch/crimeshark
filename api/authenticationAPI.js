@@ -47,6 +47,7 @@ module.exports = function(app, passport) {
 	app.get('/api/isLoggedin', isLoggedIn, function(req, res) {
 		console.log('backend prof page');
 		res.json(req.user);
+		console.log(req.user);
 		// get the user JSON object out of session and pass to template
 	});
 

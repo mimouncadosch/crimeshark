@@ -44,6 +44,7 @@ angular.module('myApp.controllers', []).
 			 * Makes an http POST request to the backend
 			 * Recieves an object, the user
 			 */
+			console.log($scope.user);
 			$http({
 				method: 'POST',
 				url: '/api/signup',
