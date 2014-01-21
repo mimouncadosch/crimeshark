@@ -36,6 +36,7 @@ controller('loginCtrl', function ($scope, $rootScope, $http, $location) {
 		};
 	}).
 controller('signupCtrl', function ($scope, $rootScope, $http, $location) {
+		//$rootScope.user = {};
 		/**
 		 * Sign up using name, email and password.
 		 */
@@ -44,7 +45,7 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location) {
 			 * Makes an http POST request to the backend
 			 * Recieves an object, the user
 			 */
-			console.log($scope.user);
+		 	$scope.perimeter = $rootScope.coordinates;
 			$http({
 				method: 'POST',
 				url: '/api/signup',
@@ -62,7 +63,7 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location) {
 controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 		// Makes sure the app already recognizes the user is logged in
 		// If not, it redirects to the login page
-
+		console.log($rootScope.user);
 		if(!$rootScope.user) {
 			/**
 			 * Makes an http GET request to the backend
@@ -76,6 +77,7 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 					console.log('got user!');
 					$rootScope.user = data; 
 					console.log($rootScope.user);
+
 				} else {
 					console.log('should redirect!');
 					$location.path("/login");
@@ -238,11 +240,13 @@ controller('perimeterCtrl', function ($scope, $rootScope, $http, $location, Data
 	function addPolygonListener(){
 		google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
 			var coordinates = (polygon.getPath().getArray());
+			$rootScope.coordinates = coordinates;
 		});
 	};
 	
-	var perimeter = addPolygonListener();	
-	$rootScope.user.perimeter = perimeter;
+	var polygonPerimeter = addPolygonListener();	
+	// = polygonPerimeter;
+//	console.log(polygonPerimeter);
 });
 
 

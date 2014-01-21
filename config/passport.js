@@ -52,12 +52,13 @@ module.exports = function(passport) {
             if (user) {
                 return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
             } else {
-
+                console.log(req.query);
                 // if there is no user with that email
                 // create the user
                 var newUser             = new User();
                 // set the user's local credentials
                 // JSON.parse()
+                console.log(req.param('perimeter'));
                 newUser.name = req.param('name');
                 newUser.phone = req.param('phone');
                 newUser.contact = JSON.parse(req.param('contact'));
