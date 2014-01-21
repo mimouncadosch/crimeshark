@@ -21,7 +21,7 @@ var userSchema =  new Schema({
 		password : String
 	},
 	reports : [{type: Number, ref: 'User'}],
-	perimeter : [{lat: Number, lng: Number}]
+	perimeter : [{d: Number, e: Number}]
 });
 
 // methods =============================

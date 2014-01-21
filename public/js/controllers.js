@@ -45,7 +45,7 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location) {
 			 * Makes an http POST request to the backend
 			 * Recieves an object, the user
 			 */
-		 	$scope.perimeter = $rootScope.coordinates;
+		 	$scope.user.perimeter = $rootScope.coordinates;
 			$http({
 				method: 'POST',
 				url: '/api/signup',

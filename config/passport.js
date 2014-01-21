@@ -52,18 +52,27 @@ module.exports = function(passport) {
             if (user) {
                 return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
             } else {
-                console.log(req.query);
                 // if there is no user with that email
                 // create the user
                 var newUser             = new User();
                 // set the user's local credentials
                 // JSON.parse()
-                console.log(req.param('perimeter'));
                 newUser.name = req.param('name');
                 newUser.phone = req.param('phone');
                 newUser.contact = JSON.parse(req.param('contact'));
                 if(req.param('reports')) { newUser.reports = req.param('reports') };
-                if(req.param('perimeter')) { newUser.perimeter = JSON.parse(req.param('perimeter')) };
+                var perimeter = req.param('perimeter');
+
+                if(perimeter) { 
+                    var parsedPerimeter = [];
+                    for (var i = perimeter.length - 1; i >= 0; i--) {
+                        console.log(perimeter[i]);
+                        console.log(JSON.parse(perimeter[i]));
+                        parsedPerimeter.push(JSON.parse(perimeter[i]));
+                    };
+                    newUser.perimeter = parsedPerimeter;
+                    // newUser.perimeter = JSON.parse(req.param('perimeter')) 
+                };
                 newUser.local.email     = email;
                 newUser.hashPassword(password);
 
