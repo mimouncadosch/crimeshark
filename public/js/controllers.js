@@ -200,11 +200,11 @@ controller('perimeterCtrl', function ($scope, $rootScope, $http, $location, Data
 		drawingControlOptions: {
 			position: google.maps.ControlPosition.TOP_CENTER,
 			drawingModes: [
-			google.maps.drawing.OverlayType.MARKER,
-			google.maps.drawing.OverlayType.CIRCLE,
-			google.maps.drawing.OverlayType.POLYGON,
-			google.maps.drawing.OverlayType.POLYLINE,
-			google.maps.drawing.OverlayType.RECTANGLE
+			// google.maps.drawing.OverlayType.MARKER,
+			// google.maps.drawing.OverlayType.CIRCLE,
+			google.maps.drawing.OverlayType.POLYGON
+			// google.maps.drawing.OverlayType.POLYLINE,
+			// google.maps.drawing.OverlayType.RECTANGLE
 			]
 		},
 		markerOptions: {
@@ -220,9 +220,21 @@ controller('perimeterCtrl', function ($scope, $rootScope, $http, $location, Data
 		}
 	});
 
+	drawingManager.setMap(map);	
+
+	//Leave emtpy
+	function initialize(map_id, data, map){
+	};
 	
-	drawingManager.setMap(map);
 	
 	google.maps.event.addDomListener(window, 'load', initialize);
-});
 
+	function addPolygonListener(){
+		google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
+			var coordinates = (polygon.getPath().getArray());
+		});
+	};
+	
+	var perimeter = addPolygonListener();	
+	$rootScope.user.perimeter = perimeter;
+});
