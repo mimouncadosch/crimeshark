@@ -59,7 +59,7 @@ module.exports = function(passport) {
                 // JSON.parse()
                 newUser.name = req.param('name');
                 newUser.phone = req.param('phone');
-                newUser.contact = JSON.parse(req.param('contact'));
+                // newUser.contact = JSON.parse(req.param('contact'));
                 if(req.param('reports')) { newUser.reports = req.param('reports') };
                 var perimeter = req.param('perimeter');
 

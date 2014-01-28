@@ -3,21 +3,24 @@
  */
 
 var express = require('express'),
+	port = process.env.PORT || 3000,
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	//api = require('./routes/api'),
 	http = require('http'),
-	path = require('path'),
-	port        = process.env.PORT || 3000;
-
-var app = module.exports = express();
+	path = require('path');
+	
 var configDB = require('./config/database.js');
+var app = express();
+
 
 /**
  * Configuration
  */
 
 mongoose.connect(configDB.url); // connect to our database
+console.log(configDB.url);
+
 require('./config/passport')(passport);
 
 // all environments
