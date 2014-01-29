@@ -45,26 +45,25 @@ module.exports = function(app) {
 
             // check to see if theres already a user with that email
             if (user) {
-                // if there is no user with that email
-                // create the user
-                // set the user's local credentials
-                // JSON.parse()
-                user.name = req.param('name');
-                user.phone = req.param('phone');
-                // newUser.contact = JSON.parse(req.param('contact'));
-                user.perimeter = req.param('perimeter');
 
-                // if(perimeter) { 
-                //     var parsedPerimeter = [];
-                //     for (var i = perimeter.length - 1; i >= 0; i--) {
-                //         console.log(perimeter[i]);
-                //         console.log(JSON.parse(perimeter[i]));
-                //         parsedPerimeter.push(JSON.parse(perimeter[i]));
-                //     };
-                //     user.perimeter = parsedPerimeter;
-                //     // newUser.perimeter = JSON.parse(req.param('perimeter')) 
-                // };
-                newUser.local.email     = email;
+            	user = req.user;
+                // JSON.parse()
+                // user.name = req.param('name');
+                // user.phone = req.param('phone');
+                // // newUser.contact = JSON.parse(req.param('contact'));
+                // user.perimeter = req.param('perimeter');
+
+                // // if(perimeter) { 
+                // //     var parsedPerimeter = [];
+                // //     for (var i = perimeter.length - 1; i >= 0; i--) {
+                // //         console.log(perimeter[i]);
+                // //         console.log(JSON.parse(perimeter[i]));
+                // //         parsedPerimeter.push(JSON.parse(perimeter[i]));
+                // //     };
+                // //     user.perimeter = parsedPerimeter;
+                // //     // newUser.perimeter = JSON.parse(req.param('perimeter')) 
+                // // };
+                // newUser.local.email     = email;
                 //newUser.hashPassword(password);
 
                 // save the user
