@@ -23,6 +23,10 @@ config(function ($routeProvider, $locationProvider) {
 			templateUrl: 'partials/profile.html',
 			controller: 'profileCtrl'
 		}).
+		when('/report', {
+			templateUrl: 'partials/report.html',
+			controller: 'reportCtrl'
+		}).
 			otherwise({
 			redirectTo: '/login'
 		});

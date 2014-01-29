@@ -87,6 +87,24 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 				console.log('error');
 			});
 		}
+		$scope.logout = function() {
+			$rootScope.user = null;
+			$http.get('/api/logout')
+			.success(function() {
+				console.log('logged out');
+				$location.path("/login");
+			})
+			.error(function(data) {
+				console.log('Error: ' + data);
+			});
+		}
+		$scope.updateUser = function() {
+			$http({
+				method: 'POST',
+				url: '/api/updateUser'
+				params: $scope.user
+			})
+		}
 
 		var locations = $rootScope.user.perimeter;
 		// console.log(locations);
@@ -152,7 +170,7 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 
 	    google.maps.event.addDomListener(window, 'load', initialize);
 }).
-controller('mapCtrl', function ($scope, $rootScope, $http, $location, Data){
+controller('reportCtrl', function ($scope, $rootScope, $http, $location, Data){
 	$http.get('/reports')
 	.success(function(data) {
 		$rootScope.reports = data.result;
@@ -169,6 +187,7 @@ controller('mapCtrl', function ($scope, $rootScope, $http, $location, Data){
     var dbWindows = [];
 
     // places markers of previous reports in database
+    //========== This needs to go in profile controller =======//
     function setMarkers(data, map){
     	$http.get('/reports')
     	.success(function(data) {
@@ -244,7 +263,7 @@ controller('mapCtrl', function ($scope, $rootScope, $http, $location, Data){
     	var latitude = location.lat();
     	var longitude = location.lng();
     	var infowindow = new google.maps.InfoWindow({
-    		content: "Gracias por reportar"
+    		content: "Thanks for reporting with us"
     	});
     	document.getElementById("latitude").value = latitude;
     	document.getElementById("longitude").value = longitude;

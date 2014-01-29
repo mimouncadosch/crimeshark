@@ -62,6 +62,7 @@ module.exports = function(app, passport) {
 	// LOGOUT ==============================
 	// =====================================
 	app.get('/api/logout', function(req, res) {
+		console.log("logging out");
 		req.logout();
 		res.redirect('/login');
 	});
