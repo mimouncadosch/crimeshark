@@ -1,0 +1,17 @@
+Searching 2201 files for "local-signup"
+
+/Users/Mimoun/safetyshark/api/authenticationAPI.js:
+   19  
+   20  	// process the SIGNUP form
+   21: 	app.post('/api/signup', passport.authenticate('local-signup', {
+   22  		successRedirect : '/api/isLoggedin', // redirect to the secure profile section
+   23  		failureRedirect : '/signup', // redirect back to the signup page if there is an error
+
+/Users/Mimoun/safetyshark/config/passport.js:
+   34  	// by default, if there was no name, it would just be called 'local'
+   35  
+   36:     passport.use('local-signup', new LocalStrategy({
+   37          // by default, local strategy uses username and password, we will override with email
+   38          usernameField : 'email',
+
+2 matches across 2 files
