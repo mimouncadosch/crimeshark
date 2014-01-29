@@ -326,6 +326,22 @@ controller('perimeterCtrl', function ($scope, $rootScope, $http, $location, Data
 	var polygonPerimeter = addPolygonListener();	
 	// = polygonPerimeter;
 //	console.log(polygonPerimeter);
+}).
+controller('reportCtrl', function ($scope, $rootScope, $http, $location) {
+	$scope.postReport = function() {
+		$http({
+			method: 'POST',
+			url: '/api/report/new',
+			params: $scope.report
+		}).success(function (data, status, headers, config) {
+			console.log('new report posted');
+			//console.log($rootScope.user);
+			$location.path('/profile');
+		})
+		.error(function(data) {
+			console.log('Error: ' + data);
+		});
+	};
 });
 
 
