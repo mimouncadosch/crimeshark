@@ -45,7 +45,7 @@ module.exports = function(app, passport) {
 	// we will use route middleware to verify this (the isLoggedIn function)
 
 	app.get('/api/isLoggedin', isLoggedIn, function(req, res) {
-		console.log('backend prof page');
+		console.log('back-end profile page');
 		res.json(req.user);
 		console.log(req.user);
 		// get the user JSON object out of session and pass to template

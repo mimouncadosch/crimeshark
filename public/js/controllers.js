@@ -101,7 +101,7 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 		$scope.updateUser = function() {
 			$http({
 				method: 'POST',
-				url: '/api/updateUser'
+				url: '/api/updateUser',
 				params: $scope.user
 			})
 		}

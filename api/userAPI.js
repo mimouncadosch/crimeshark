@@ -35,18 +35,35 @@ module.exports = function(app) {
 		});
 	});
 
-	app.post('/api/updateUser', function (req, res) {
+	app.post('/api/updateUser', function (req, res, done) {
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({'_id': id}, function(err, user) {
+
+        User.findOne({'_id': req.user.id}, function(err, user) {
             // if there are any errors, return the error
             if (err)
+                
                 return done(err);
 
             // check to see if theres already a user with that email
             if (user) {
+                user.name = req.param('name');
+            	user.phone = req.param('phone');
+                user.local.email = req.param('email');
+                // No option to change password yet //
+                
+                var perimeter = req.param('perimeter');
 
-            	user = req.user;
+                if(perimeter) { 
+                    var parsedPerimeter = [];
+                    for (var i = perimeter.length - 1; i >= 0; i--) {
+                        console.log(perimeter[i]);
+                        console.log(JSON.parse(perimeter[i]));
+                        parsedPerimeter.push(JSON.parse(perimeter[i]));
+                    };
+                    newUser.perimeter = parsedPerimeter;
+                    // newUser.perimeter = JSON.parse(req.param('perimeter')) 
+                };
                 // JSON.parse()
                 // user.name = req.param('name');
                 // user.phone = req.param('phone');
@@ -70,7 +87,7 @@ module.exports = function(app) {
                 user.save(function(err) {
                     if (err)
                         throw err;
-                    return done(null, newUser);
+                    return done(null, user);
                 });
             }
 
