@@ -53,7 +53,8 @@ module.exports = function(app) {
                 // No option to change password yet //
                 
                 var perimeter = req.param('perimeter');
-
+                console.log("PERIMETER");
+                console.log(perimeter);
                 if(perimeter) { 
                     var parsedPerimeter = [];
                     for (var i = perimeter.length - 1; i >= 0; i--) {
@@ -61,7 +62,7 @@ module.exports = function(app) {
                         console.log(JSON.parse(perimeter[i]));
                         parsedPerimeter.push(JSON.parse(perimeter[i]));
                     };
-                    newUser.perimeter = parsedPerimeter;
+                    user.perimeter = parsedPerimeter;
                     // newUser.perimeter = JSON.parse(req.param('perimeter')) 
                 };
                 // JSON.parse()

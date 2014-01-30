@@ -78,6 +78,7 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 					console.log('got user!');
 					$rootScope.user = data; 
 					console.log($rootScope.user);
+					makeMap();
 
 				} else {
 					console.log('should redirect!');
@@ -105,6 +106,10 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 				params: $scope.user
 			})
 		}
+
+		function makeMap() {
+
+		console.log("Map is being made");
 
 		var locations = $rootScope.user.perimeter;
 		// console.log(locations);
@@ -169,6 +174,7 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 	    };
 
 	    google.maps.event.addDomListener(window, 'load', initialize);
+	}
 }).
 controller('mapCtrl', function ($scope, $rootScope, $http, $location, Data){
 	$http.get('/reports')
