@@ -13,7 +13,7 @@ controller('loginCtrl', function ($scope, $rootScope, $http, $location) {
 		 $scope.login = function() { 
 			/**
 			 * Makes an http POST request to the backend
-			 * Recieves an object, the user
+			 * Backend receives an object, the user
 			 */
 			 $http({
 			 	method: 'POST',
@@ -25,7 +25,7 @@ controller('loginCtrl', function ($scope, $rootScope, $http, $location) {
 
 				// Saves the user to rootScope
 				$rootScope.user = data;
-				console.log('redirect to prof. frontend');
+				console.log('redirect to profile page on the frontend');
 				console.log(data.name);
 				$location.path("/profile");
 				
@@ -36,24 +36,23 @@ controller('loginCtrl', function ($scope, $rootScope, $http, $location) {
 		};
 	}).
 controller('signupCtrl', function ($scope, $rootScope, $http, $location) {
-		//$rootScope.user = {};
 		/**
 		 * Sign up using name, email and password.
 		 */
 		 $scope.signup = function() {
 			/**
 			 * Makes an http POST request to the backend
-			 * Recieves an object, the user
+			 * Backend recieves an object, the user
 			 */
-		 	$scope.user.perimeter = $rootScope.coordinates;
-			$http({
-				method: 'POST',
-				url: '/api/signup',
-				params: $scope.user
-			}).success(function (data, status, headers, config) {
+			 $scope.user.perimeter = $rootScope.coordinates;
+			 $http({
+			 	method: 'POST',
+			 	url: '/api/signup',
+			 	params: $scope.user
+			 }).success(function (data, status, headers, config) {
 				// Saves the user to rootScope
 				$rootScope.user = data;
-				console.log('redirect to prof. frontend');
+				console.log('redirect to profile page on the frontend');
 				$location.path("/profile");
 			}).error(function (data, status, headers, config) {
 				console.log('error');
@@ -61,19 +60,17 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location) {
 		};
 	}).
 controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
-		// Makes sure the app already recognizes the user is logged in
-		// If not, it redirects to the login page
-		// $rootScope.user = {};
-		// console.log($rootScope.user);
-		if(!$rootScope.user) {
-			/**
-			 * Makes an http GET request to the backend
-			 */
-			 $http({
-			 	method: 'GET',
-			 	url: '/api/isLoggedin'
-			 }).success(function (data, status, headers, config) {
-			 	if(data) {
+		/**
+		* Makes sure the app already recognizes the user is logged in
+		* If not, it redirects to the login page
+		/**
+		 * Makes an http GET request to the backend
+		 */
+		 $http({
+		 	method: 'GET',
+		 	url: '/api/isLoggedin'
+		 }).success(function (data, status, headers, config) {
+		 	if(data) {
 					// Saves the user to rootScope
 					console.log('got user!');
 					$rootScope.user = data; 
@@ -87,7 +84,7 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 			}).error(function (data, status, headers, config) {
 				console.log('error');
 			});
-		}
+		
 		$scope.logout = function() {
 			$rootScope.user = null;
 			$http.get('/api/logout')
@@ -156,9 +153,36 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 	        center : new google.maps.LatLng(averageLatitude, averageLongitude),
 	        mapTypeId : google.maps.MapTypeId.ROADMAP
 	    };
-
-		// new map
+	    // new map
 		var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
+
+		var drawingManager = new google.maps.drawing.DrawingManager({
+			drawingMode: google.maps.drawing.OverlayType.MARKER,
+			drawingControl: true,
+			drawingControlOptions: {
+				position: google.maps.ControlPosition.TOP_CENTER,
+				drawingModes: [
+			// google.maps.drawing.OverlayType.MARKER,
+			// google.maps.drawing.OverlayType.CIRCLE,
+			google.maps.drawing.OverlayType.POLYGON
+			// google.maps.drawing.OverlayType.POLYLINE,
+			// google.maps.drawing.OverlayType.RECTANGLE
+			]
+			},
+			markerOptions: {
+				icon: 'images/beachflag.png'
+			},
+			circleOptions: {
+				fillColor: '#ffff00',
+				fillOpacity: 1,
+				strokeWeight: 5,
+				clickable: false,
+				editable: true,
+				zIndex: 1
+			}
+		});
+
+		drawingManager.setMap(map);    
 	    
 	    // show polygon on map
 	    perimeter.setMap(map);
@@ -176,8 +200,13 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 	    google.maps.event.addDomListener(window, 'load', initialize);
 	}
 }).
-controller('reportCtrl', function ($scope, $rootScope, $http, $location, Data){
+controller('reportCtrl', function ($scope, $rootScope, $http, $location, GoogleMaps){
+	/**
+	* This controller allows users and the police to post reports.
+	* Reports are sent to the backend via HTTP POST request.
+	*/
 
+	// Post request to send data to the backend
 	$scope.postReport = function() {
 		$http({
 			method: 'POST',
@@ -193,7 +222,6 @@ controller('reportCtrl', function ($scope, $rootScope, $http, $location, Data){
 		});
 	};
 
-	
 	$http.get('/reports')
 	.success(function(data) {
 		$rootScope.reports = data.result;
@@ -201,13 +229,6 @@ controller('reportCtrl', function ($scope, $rootScope, $http, $location, Data){
 	.error(function(data) {
 		console.log('Error: ' + data);
 	});
-
-    // used so user can only place one marker at a time
-    var markersArray = [];
-
-    // used for database recorded locations
-    var dbMarkers = [];
-    var dbWindows = [];
 
     // places markers of previous reports in database
     //========== This needs to go in profile controller =======//
@@ -229,72 +250,6 @@ controller('reportCtrl', function ($scope, $rootScope, $http, $location, Data){
     		}
     	})     
     };
-
-    // map options
-    var myOptions = {
-    	zoom : 12,
-    	center : new google.maps.LatLng(40.750046, -73.992358),
-    	mapTypeId : google.maps.MapTypeId.ROADMAP
-    };
-
-    // new map
-    var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
-
-    // initialize map
-    function initialize(map_id, data) {   
-    	google.maps.event.addListener(map, 'click', function(event) {
-    		placeMarker(event.latLng);
-    	});
-        //     google.maps.event.addListener(marker, 'mouseover', function() {
-        //         infowindow.open(map, marker);
-        // }); 
-
-            // places markers of previous reports in database
-            setMarkers(data, map);
-            // console.log(dbMarkers);
-            // console.log(dbWindows);
-        };
-
-    // places infowindows on markers
-    // function setWindows(map){
-    //         console.log(dbMarkers);
-    //         console.log(dbWindows);
-    // };
-
-
-    // delete old marker when new one placeds
-    function deleteOverlays() {
-    	if (markersArray) {
-    		for (var i in markersArray) {
-    			markersArray[i].setMap(null);
-    		}
-    		markersArray.length = 0;
-    	}
-    };
-
-    // user-placed marker
-    function placeMarker(location) {
-    	deleteOverlays();
-
-    	var marker = new google.maps.Marker({
-    		map: map,
-    		position: location
-    	});
-
-    	markersArray.push(marker);
-
-    	var latitude = location.lat();
-    	var longitude = location.lng();
-    	var infowindow = new google.maps.InfoWindow({
-    		content: "Thanks for reporting with us"
-    	});
-    	document.getElementById("latitude").value = latitude;
-    	document.getElementById("longitude").value = longitude;
-
-    	infowindow.open(map,marker);
-    };
-
-    google.maps.event.addDomListener(window, 'load', initialize);
 }).
 controller('perimeterCtrl', function ($scope, $rootScope, $http, $location, Data){
 	var mapOptions = {
@@ -347,7 +302,7 @@ controller('perimeterCtrl', function ($scope, $rootScope, $http, $location, Data
 	};
 	
 	var polygonPerimeter = addPolygonListener();	
-	// = polygonPerimeter;
+	// 	= polygonPerimeter;
 //	console.log(polygonPerimeter);
 });
 
