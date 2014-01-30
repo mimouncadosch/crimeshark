@@ -1,23 +1,14 @@
 <div id="map-canvas"></div>
+<form>
+	<input type="text" class="form-control input-lg text-center" placeholder="Type of Crime" ng-model="report.title">
 
-<div class="row" ng-controller="mainController">
-		<div id="map-canvas" class="col-md-8"></div>
-		<form>
-			<div class="col-md-4">
-				<input type="text" class="form-control input-lg text-center" placeholder="Type of Crime" ng-model="title">
+	<input type="text" class="form-control input-lg text-center" placeholder="Description" ng-model="report.description">
+	<input type="text" class="form-control input-lg text-center" placeholder="Place" ng-model="report.place">
 
-				<input type="text" class="form-control input-lg text-center" placeholder="Description" ng-model="description">
-				<input type="text" class="form-control input-lg text-center" placeholder="Place" ng-model="place">
-				
-				<input type="text" class="form-control input-lg" id="latitude" ng-model="latitude">
+	<input type="text" class="form-control input-lg" id="latitude" ng-model="report.latitude">
 
-				<input enter="passCoordinates()" type="text" class="form-control input-lg" id="longitude" ng-model="longitude">
-			</div>
-
-			<button type="submit" class="btn btn-primary btn-lg" ng-click="createReport()">createReport</button>
-		</div>
-	</form>
+	<input enter="passCoordinates()" type="text" class="form-control input-lg" id="longitude" ng-model="report.longitude">
 </div>
 
-<div ng-controller="mapController">
-</div>
+<button type="submit" class="btn btn-primary btn-lg" ng-click="postReport()">Post Report</button>
+</form>

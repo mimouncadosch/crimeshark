@@ -22,7 +22,7 @@ module.exports = function(app) {
 		Report.create({
 			title 	: req.param('title'),
 			body 	: req.param('body'),
-			user 	: req.user._id,
+			// user 	: req.user._id,
 			location: { lat: req.param('lat'), lng: req.param('lng') }
 		}, function(err, report) {
 			if (err)
