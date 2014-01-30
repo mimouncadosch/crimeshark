@@ -170,7 +170,24 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 
 	    google.maps.event.addDomListener(window, 'load', initialize);
 }).
-controller('mapCtrl', function ($scope, $rootScope, $http, $location, Data){
+controller('reportCtrl', function ($scope, $rootScope, $http, $location, Data){
+
+	$scope.postReport = function() {
+		$http({
+			method: 'POST',
+			url: '/api/report/new',
+			params: $scope.report
+		}).success(function (data, status, headers, config) {
+			console.log('new report posted');
+			//console.log($rootScope.user);
+			$location.path('/profile');
+		})
+		.error(function(data) {
+			console.log('Error: ' + data);
+		});
+	};
+
+	
 	$http.get('/reports')
 	.success(function(data) {
 		$rootScope.reports = data.result;
@@ -239,7 +256,7 @@ controller('mapCtrl', function ($scope, $rootScope, $http, $location, Data){
     // };
 
 
-    // delete old marker when new one is placed
+    // delete old marker when new one placeds
     function deleteOverlays() {
     	if (markersArray) {
     		for (var i in markersArray) {
@@ -326,79 +343,6 @@ controller('perimeterCtrl', function ($scope, $rootScope, $http, $location, Data
 	var polygonPerimeter = addPolygonListener();	
 	// = polygonPerimeter;
 //	console.log(polygonPerimeter);
-}).
-controller('reportCtrl', function ($scope, $rootScope, $http, $location) {
-	
-	$scope.postReport = function() {
-		$http({
-			method: 'POST',
-			url: '/api/report/new',
-			params: $scope.report
-		}).success(function ($scope, data, status, headers, config) {
-			console.log('new report posted');
-			console.log("latitude HERE : ", $scope.report.latitude);
-			$scope.report.lat = $scope.report.latitude;
-			$scope.report.lon = $scope.report.longitude;
-			//console.log($rootScope.user);
-			$location.path('/profile');
-		})
-		.error(function(data) {
-			console.log('Error: ' + data);
-		});
-	};
-
-	// used so user can only place one marker at a time
-    var markersArray = [];
-
-	// Map where people can report crimes
-	var mapOptions = {
-		center: new google.maps.LatLng(32.7758, -96.7967),
-		zoom: 12,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-	};
-	var map = new google.maps.Map(document.getElementById('map-canvas'),
-		mapOptions);
-
-	// delete old marker when new one is placed
-	function deleteOverlays() {
-		if (markersArray) {
-			for (var i in markersArray) {
-				markersArray[i].setMap(null);
-			}
-			markersArray.length = 0;
-		}
-	};
-
-    // user-placed marker
-    function placeMarker(location) {
-    	deleteOverlays();
-
-    	var marker = new google.maps.Marker({
-    		map: map,
-    		position: location
-    	});
-
-    	markersArray.push(marker);
-
-    	var latitude = location.lat();
-    	var longitude = location.lng();
-    	var infowindow = new google.maps.InfoWindow({
-    		content: "Thanks for reporting with us"
-    	});
-    	document.getElementById("latitude").value = latitude;
-    	document.getElementById("longitude").value = longitude;
-
-    	infowindow.open(map,marker);
-    };
-    
-    function initialize(map_id, data) {   
-    	google.maps.event.addListener(map, 'click', function(event) {
-    		placeMarker(event.latLng);
-    	});
-    };
-
-	google.maps.event.addDomListener(window, 'load', initialize);
-
 });
 
 
