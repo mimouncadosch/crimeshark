@@ -13,6 +13,8 @@ myApp.factory('ReportMap', function($http) {
 	* This service simplifies the code for the reports map
 	*/
 
+    var coordinates = {};
+
     // Define map options
     var myOptions = {
     	zoom : 12,
@@ -63,10 +65,20 @@ myApp.factory('ReportMap', function($http) {
     	document.getElementById("longitude").value = longitude;
 
     	infowindow.open(map,marker);
+
+        coordinates = location;
     };
 
     // Initialize the map
+
     google.maps.event.addDomListener(window, 'load', initialize);
+
+    // Returns the coordinates of the report
+    return {
+        returnCoordinates: function () {
+            return coordinates;
+        }
+    };
 
 });
 myApp.factory('ProfileMap', function($http) {
@@ -77,7 +89,8 @@ myApp.factory('ProfileMap', function($http) {
     console.log("Map is being made");
     // This function makes the map in the profile page, 
     // once the data from the backend is loaded
-    function makeMap() {
+
+
         // This is the array with the coordinates of a user's safety perimeter
         var locations = $rootScope.user.perimeter;
 
@@ -170,6 +183,5 @@ myApp.factory('ProfileMap', function($http) {
         };
 
         google.maps.event.addDomListener(window, 'load', initialize);
-    };
 
 });

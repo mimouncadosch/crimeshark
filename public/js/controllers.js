@@ -110,21 +110,16 @@ controller('reportCtrl', function ($scope, $rootScope, $http, $location, ReportM
 
 	// Post request to send data to the backend
 	$scope.postReport = function() {
+		
+		$scope.report.latitude = ReportMap.returnCoordinates().d;
+		$scope.report.longitude = ReportMap.returnCoordinates().e;
+		
 		$http({
 			method: 'POST',
 			url: '/api/report/new',
 			params: $scope.report
 		}).success(function (data, status, headers, config) {
 			console.log('New report posted');
-			console.log($scope.report.latitude);
-			
-			// console.log($scope.report.title);
-			// console.log($scope.report.description);
-			// console.log($scope.report.place);
-			// console.log($scope.report.latitude);
-			// console.log($scope.report.longitude);
-			
-			// $location.path('/profile');
 		})
 		.error(function(data) {
 			console.log('Error: ' + data);

@@ -20,7 +20,7 @@ module.exports = function(app) {
 	app.post('/api/report/new', function(req, res) {
 
 		console.log("Checking if report was passed properly");
-		console.log(req.param('title'));
+		console.log(req.param('name'));
 		console.log(req.param('description'));
 		console.log(req.param('place'));
 		console.log(req.param('latitude'));
