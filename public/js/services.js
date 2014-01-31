@@ -81,7 +81,7 @@ myApp.factory('ReportMap', function($http) {
     };
 
 });
-myApp.factory('ProfileMap', function($http) {
+myApp.factory('ProfileMap', function($http, $rootScope) {
    
     /**
     * This service simplifies the code for the map in the profile page
@@ -90,8 +90,10 @@ myApp.factory('ProfileMap', function($http) {
     // This function makes the map in the profile page, 
     // once the data from the backend is loaded
 
-
         // This is the array with the coordinates of a user's safety perimeter
+        // if(!$rootScope.user) {
+        console.log($rootScope.user);  
+        // }
         var locations = $rootScope.user.perimeter;
 
         // Retrieve points from user's safety perimeter in database
@@ -184,4 +186,53 @@ myApp.factory('ProfileMap', function($http) {
 
         google.maps.event.addDomListener(window, 'load', initialize);
 
+});
+myApp.factory('SignupMap', function($http, $rootScope) {
+
+    var mapOptions = {
+        center: new google.maps.LatLng(40.750046, -73.992358),
+        zoom: 8,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById('map-canvas'),
+        mapOptions);
+    var drawingManager = new google.maps.drawing.DrawingManager({
+        drawingMode: google.maps.drawing.OverlayType.MARKER,
+        drawingControl: true,
+        drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: [
+            google.maps.drawing.OverlayType.POLYGON
+            ]
+        },
+        markerOptions: {
+            icon: 'images/beachflag.png'
+        },
+        circleOptions: {
+            fillColor: '#ffff00',
+            fillOpacity: 1,
+            strokeWeight: 5,
+            clickable: false,
+            editable: true,
+            zIndex: 1
+        }
+    });
+
+    drawingManager.setMap(map); 
+
+    //Leave emtpy
+
+    function initialize(map_id, data, map){
+    };
+    
+    function addPolygonListener(){
+        google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
+            var coordinates = (polygon.getPath().getArray());
+            $rootScope.coordinates = coordinates;
+        });
+    };
+    
+    var polygonPerimeter = addPolygonListener();    
+
+    google.maps.event.addDomListener(window, 'load', initialize);
 });
