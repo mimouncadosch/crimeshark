@@ -13,9 +13,12 @@
 	<div ng-controller="AppCtrl">
 		<!--The double brackets refer to the $scope.name variable in public/js/controllers.js-->
 		<h2>Safety Shark</h2>
-		<ul class="menu">
+		<ul ng-show="!user" class="menu">
 			<li><a href="signup">signup</a></li>
 			<li><a href="login">login</a></li>
+		</ul>
+		<ul ng-show="user" class="menu">
+			<li><a href="profile">profile</a></li>
 			<li><a href="report">report</a></li>
 		</ul>
 		<!--The partials are embeded in the ng-view div-->
