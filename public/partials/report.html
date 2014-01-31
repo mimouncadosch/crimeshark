@@ -1,5 +1,6 @@
 <div id="map-canvas"></div>
-<form>
+
+<form ng-submit="postReport()">
 	<input type="text" class="form-control input-lg text-center" placeholder="Type of Crime" ng-model="report.title">
 
 	<input type="text" class="form-control input-lg text-center" placeholder="Description" ng-model="report.description">
@@ -8,7 +9,7 @@
 	<input type="text" class="form-control input-lg" id="latitude" ng-model="report.latitude">
 
 	<input enter="passCoordinates()" type="text" class="form-control input-lg" id="longitude" ng-model="report.longitude">
-</div>
 
-<button type="submit" class="btn btn-primary btn-lg" ng-click="postReport()">Post Report</button>
+
+	<input type="submit" value="Report!">
 </form>

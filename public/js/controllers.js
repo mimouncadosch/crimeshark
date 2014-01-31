@@ -11,22 +11,21 @@ controller('loginCtrl', function ($scope, $rootScope, $http, $location) {
 		 * Login User with email and password
 		 */
 		 $scope.login = function() { 
-			/**
-			 * Makes an http POST request to the backend
-			 * Backend receives an object, the user
-			 */
+			// Makes an http POST request to the backend
+			// Backend receives an object, the user
 			 $http({
 			 	method: 'POST',
 			 	url: '/api/login',
 			 	params: $scope.user
 			 }).success(function (data, status, headers, config) {
+				
 				// Eventually we want to send some flash-messages to tell the user
 				// why his login went wrong.
 
 				// Saves the user to rootScope
 				$rootScope.user = data;
 				console.log('redirect to profile page on the frontend');
-				console.log(data.name);
+				console.log(data);
 				$location.path("/profile");
 				
 			}).error(function (data, status, headers, config) {
@@ -39,11 +38,10 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location) {
 		/**
 		 * Sign up using name, email and password.
 		 */
-		 $scope.signup = function() {
-			/**
-			 * Makes an http POST request to the backend
-			 * Backend recieves an object, the user
-			 */
+
+		$scope.signup = function() {
+			 // Makes an http POST request to the backend
+			 //Backend recieves an object, the user
 			 $scope.user.perimeter = $rootScope.coordinates;
 			 $http({
 			 	method: 'POST',
@@ -59,13 +57,13 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location) {
 			});
 		};
 	}).
-controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
+controller('profileCtrl', function ($scope, $rootScope, $http, $location, ProfileMap) {
 		/**
 		* Makes sure the app already recognizes the user is logged in
 		* If not, it redirects to the login page
-		/**
-		 * Makes an http GET request to the backend
-		 */
+		*/
+
+		//Makes an http GET request to the backend 
 		 $http({
 		 	method: 'GET',
 		 	url: '/api/isLoggedin'
@@ -103,104 +101,8 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location) {
 				params: $scope.user
 			})
 		}
-
-		function makeMap() {
-
-		console.log("Map is being made");
-
-		var locations = $rootScope.user.perimeter;
-		// console.log(locations);
-
-		// retrieves points from user's safety perimeter in database
-	    function createCoordinatesArray(){
-	    		var polygonCoordinates = [];
-	    		// i is each point in the locations array
-	    		for (var i = 0; i < locations.length; i++){
-	    			var latitude = locations[i].d;
-	    			var longitude = locations[i].e;
-	    			polygonCoordinates.push(new google.maps.LatLng(latitude, longitude));
-	    		}
-	    		return polygonCoordinates;
-	    };
-	    var polygonCoordinates = createCoordinatesArray();
-	    console.log(polygonCoordinates);
-
-	    // Find center of polygon: find average latitude and longitude
-	    var sumLatitudes = 0;
-	    var sumLongitudes = 0;
-	    for (var i = 0; i < polygonCoordinates.length; i++){
-	    	sumLatitudes = sumLatitudes + polygonCoordinates[i].d;
-	    	sumLongitudes = sumLongitudes + polygonCoordinates[i].e;
-	    }
-	    var averageLatitude = sumLatitudes / (polygonCoordinates.length);
-	    var averageLongitude = sumLongitudes / (polygonCoordinates.length);
-
-	    console.log(averageLatitude);
-		console.log(averageLongitude);	    
-
-		var perimeter = new google.maps.Polygon({
-			paths : polygonCoordinates,
-			strokeOpacity: 0.8,
-			strokeWeight: 2,
-			fillColor: '#FF0000',
-			fillOpacity: 0.35
-		});
-		console.log(perimeter);
-	
-	    // map options
-	    var myOptions = {
-	        zoom : 12,
-	        center : new google.maps.LatLng(averageLatitude, averageLongitude),
-	        mapTypeId : google.maps.MapTypeId.ROADMAP
-	    };
-	    // new map
-		var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
-
-		var drawingManager = new google.maps.drawing.DrawingManager({
-			drawingMode: google.maps.drawing.OverlayType.MARKER,
-			drawingControl: true,
-			drawingControlOptions: {
-				position: google.maps.ControlPosition.TOP_CENTER,
-				drawingModes: [
-			// google.maps.drawing.OverlayType.MARKER,
-			// google.maps.drawing.OverlayType.CIRCLE,
-			google.maps.drawing.OverlayType.POLYGON
-			// google.maps.drawing.OverlayType.POLYLINE,
-			// google.maps.drawing.OverlayType.RECTANGLE
-			]
-			},
-			markerOptions: {
-				icon: 'images/beachflag.png'
-			},
-			circleOptions: {
-				fillColor: '#ffff00',
-				fillOpacity: 1,
-				strokeWeight: 5,
-				clickable: false,
-				editable: true,
-				zIndex: 1
-			}
-		});
-
-		drawingManager.setMap(map);    
-	    
-	    // show polygon on map
-	    perimeter.setMap(map);
-
-	    // adjust map to perimeter
-	    var bounds = new google.maps.LatLngBounds();
-		for (var i = 0; i < polygonCoordinates.length; i++) {
-  			bounds.extend (polygonCoordinates[i]);
-		}
-	    map.fitBounds(bounds);
-
-	    function initialize(map_id, data) {	
-	    };
-
-	    google.maps.event.addDomListener(window, 'load', initialize);
-	}
 }).
-controller('reportCtrl', function ($scope, $rootScope, $http, $location, GoogleMaps){
+controller('reportCtrl', function ($scope, $rootScope, $http, $location, ReportMap){
 	/**
 	* This controller allows users and the police to post reports.
 	* Reports are sent to the backend via HTTP POST request.
@@ -213,9 +115,16 @@ controller('reportCtrl', function ($scope, $rootScope, $http, $location, GoogleM
 			url: '/api/report/new',
 			params: $scope.report
 		}).success(function (data, status, headers, config) {
-			console.log('new report posted');
-			//console.log($rootScope.user);
-			$location.path('/profile');
+			console.log('New report posted');
+			console.log($scope.report.latitude);
+			
+			// console.log($scope.report.title);
+			// console.log($scope.report.description);
+			// console.log($scope.report.place);
+			// console.log($scope.report.latitude);
+			// console.log($scope.report.longitude);
+			
+			// $location.path('/profile');
 		})
 		.error(function(data) {
 			console.log('Error: ' + data);

@@ -3,11 +3,11 @@
 var Report = require('./models/report');
 
 /*
- * routes for GETTING report(s), and creating/updating reports
+ * Routes for GETTING report(s), and creating/updating reports
  */
 module.exports = function(app) {
 
-	//get the JSON for a particular report
+	// Get the JSON for a particular report
 	app.get('/report/:id', function(req, res) {
 		//get report by id
 		Report.findOne({'_id': req.params.id}, function(err, report) {
@@ -16,8 +16,16 @@ module.exports = function(app) {
 		});
 	});
 
-	// post an report for exchange
+	// Posting a report
 	app.post('/api/report/new', function(req, res) {
+
+		console.log("Checking if report was passed properly");
+		console.log(req.param('title'));
+		console.log(req.param('description'));
+		console.log(req.param('place'));
+		console.log(req.param('latitude'));
+		console.log(req.param('longitude'));
+
 		// create a todo, information comes from AJAX request from Angular
 		Report.create({
 			title 	: req.param('title'),
