@@ -63,28 +63,32 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location, Profil
 		* Makes sure the app already recognizes the user is logged in
 		* If not, it redirects to the login page
 		*/
-
+		
 		//Makes an http GET request to the backend 
-		 
+		console.log("prof page front");
+		//console.log($rootScope.user);
+
 		if(!$rootScope.user){
-			$http({
-				method: 'GET',
-				url: '/api/isLoggedin'
-			}).success(function (data, status, headers, config) {
-				if(data) {
-					// Saves the user to rootScope
-					console.log('got user!');
-					$rootScope.user = data; 
-					console.log($rootScope.user);
-				} else {
-					console.log('should redirect!');
-					$location.path("/login");
-				}
-			}).error(function (data, status, headers, config) {
-				console.log('error');
-			});
-		};
-		 
+	        $http({
+	            method: 'GET',
+	            url: '/api/isLoggedin'
+	        }).success(function (data, status, headers, config) {
+	            if(data) {
+	                // Saves the user to rootScope
+	                console.log('got user!');
+	                $rootScope.user = data;
+	                console.log($rootScope.user);
+	                ProfileMap.startMap($rootScope.user.perimeter);
+	            } else {
+	                console.log('should redirect!');
+	                $location.path("/login");
+	            }
+	        }).error(function (data, status, headers, config) {
+	            console.log('error');
+	        });
+	    } else {
+	    	ProfileMap.startMap($rootScope.user.perimeter);
+	    }
 		
 		$scope.logout = function() {
 			$rootScope.user = null;
