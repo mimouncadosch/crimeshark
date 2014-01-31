@@ -53,7 +53,7 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location) {
 				console.log('redirect to profile page on the frontend');
 				$location.path("/profile");
 			}).error(function (data, status, headers, config) {
-				console.log('error');
+				console.log(data);
 			});
 		};
 	}).
