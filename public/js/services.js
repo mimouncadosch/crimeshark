@@ -53,20 +53,22 @@ var myApp = angular.module('myApp.services', []);
 //     });
 // });
 
+/**
+ * Global Variables
+ */
+
+// Define map options
+    var myOptions = {
+        zoom : 12,
+        center : new google.maps.LatLng(40.750046, -73.992358),
+        mapTypeId : google.maps.MapTypeId.ROADMAP
+    };
+
 myApp.factory('ReportMap', function($http) {
 	/**
 	* This service simplifies the code for the reports map
 	*/
-
     var coordinates = {};
-
-    // Define map options
-    var myOptions = {
-    	zoom : 12,
-    	center : new google.maps.LatLng(40.750046, -73.992358),
-    	mapTypeId : google.maps.MapTypeId.ROADMAP
-    };
-
 	// Create new map
     var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
 
@@ -228,23 +230,42 @@ myApp.factory('ProfileMap', function($http, $rootScope, $location) {
             map.fitBounds(bounds);
 
 
-            // places markers of previous reports in database
+            // // This function finds whether a report falls within a user's safety perimeter. Returns boolean
+            // // In the future, send email for alert
+            // function isWithinPolygon(coordinates, polygon){
+            //     var isWithinPolygon = polygon.containsLatLng(coordinates);
+            //     console.log("is it within polygon?");
+            //     console.log(isWithinPolygon);
+            //     return isWithinPolygon
+
+            // };
+
+
+            // Places markers of previous reports in database
             function setMarkers(map){
                 $http.get('/api/reports')
                 .success(function(data) {
                     var locations = data;
+
                     for (var i = 0; i < locations.length; i++) {
                         var myLatLng = new google.maps.LatLng(locations[i].latitude, locations[i].longitude);
                         var marker = new google.maps.Marker({
                             position: myLatLng,
-                            map: map
+                            map: map,
                         });
                         
-                      var contentString =  
-                          '<div id="infoWindow">'+
-                          '<h1>' + locations[i].name + '</h1>'+
-                          '<h2>' + locations[i].description + '</h2>'+
-                          '</div>';
+                        // Check if report is within perimeter, and alert is therefore necessary
+                        console.log("coordinates");
+                        console.log(myLatLng);
+                        var isWithinPolygon = google.maps.geometry.poly.containsLocation(myLatLng, perimeter);
+                        console.log("isWithinPolygon");
+                        console.log(isWithinPolygon);
+
+                        var contentString =  
+                              '<div id="infoWindow">'+
+                              '<h1>' + locations[i].name + '</h1>'+
+                              '<h2>' + locations[i].description + '</h2>'+
+                               '</div>';
 
                         var infowindow = new google.maps.InfoWindow({
                             content: contentString
@@ -273,13 +294,8 @@ myApp.factory('ProfileMap', function($http, $rootScope, $location) {
 });
 myApp.factory('SignupMap', function($http, $rootScope) {
 
-    var mapOptions = {
-        center: new google.maps.LatLng(40.750046, -73.992358),
-        zoom: 8,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
     var map = new google.maps.Map(document.getElementById('map-canvas'),
-        mapOptions);
+        myOptions);
     var drawingManager = new google.maps.drawing.DrawingManager({
         drawingMode: google.maps.drawing.OverlayType.MARKER,
         drawingControl: true,
