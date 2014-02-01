@@ -28,10 +28,11 @@ module.exports = function(app) {
 
 		// create a todo, information comes from AJAX request from Angular
 		Report.create({
-			title 	: req.param('title'),
-			body 	: req.param('body'),
-			// user 	: req.user._id,
-			location: { lat: req.param('lat'), lng: req.param('lng') }
+			name 	: req.param('name'),
+			description 	: req.param('description'),
+			place 	: req.param('place'),
+			latitude: req.param('latitude'),
+			longitude :req.param('longitude')
 		}, function(err, report) {
 			if (err)
 				res.send(err);
@@ -44,10 +45,8 @@ module.exports = function(app) {
 	});
 
 	// Get all reports & sort them newest to oldest
-	app.get('/api/report', function(req, res) {
-		Report.find({'active': true})
-		.populate('user')
-		.sort({'date': -1})
+	app.get('/api/reports', function(req, res) {
+		Report.find({})
 		.exec(function(err, list) {
 			res.json(list);
 		});

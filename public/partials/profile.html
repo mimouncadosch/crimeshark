@@ -1,25 +1,25 @@
 <div id="map-canvas"></div>
 
 <span ng-show="edit">
-<p>Profile View.</p>
-name: <input type="text" ng-model="user.name">
-email: <input type="email" ng-model="user.local.email">
-phone: <input type="tel" ng-model="user.phone">
-contact via </br>
-sms: <input type="checkbox" ng-model="user.contact.sms">
-email: <input type="checkbox" ng-model="user.contact.email">
-<button ng-click="edit = false; updateUser()">Done</button>
-<button ng-click="logout()">logout</button>
+	<p>Profile View.</p>
+	name: <input type="text" ng-model="user.name">
+	email: <input type="email" ng-model="user.local.email">
+	phone: <input type="tel" ng-model="user.phone">
+	contact via </br>
+	sms: <input type="checkbox" ng-model="user.contact.sms">
+	email: <input type="checkbox" ng-model="user.contact.email">
+	<button ng-click="edit = false; updateUser()">Done</button>
+	<button ng-click="logout()">logout</button>
 </span>
 
 <span ng-show="!edit">
-<p>Profile View. </p><button ng-click="edit = true">Edit</button>
-<p>name: {{user.name}}</p>
-<p>email: {{user.local.email}}</p>
-<p>phone: {{user.phone}}</p>
-<p>id: {{user._id}}</p>
-contact via </br>
-<p>sms: {{user.contact.sms}}</p>
-<p>email: {{user.contact.email}}</p>
-<button ng-click="logout()">logout</button>
+	<p>Profile View. </p><button ng-click="edit = true">Edit</button>
+	<p>name: {{user.name}}</p>
+	<p>email: {{user.local.email}}</p>
+	<p>phone: {{user.phone}}</p>
+	<p>id: {{user._id}}</p>
+	contact via </br>
+	<p>sms: {{user.contact.sms}}</p>
+	<p>email: {{user.contact.email}}</p>
+	<button ng-click="logout()">logout</button>
 </span>

@@ -133,34 +133,6 @@ controller('reportCtrl', function ($scope, $rootScope, $http, $location, ReportM
 		});
 	};
 
-	$http.get('/reports')
-	.success(function(data) {
-		$rootScope.reports = data.result;
-	})
-	.error(function(data) {
-		console.log('Error: ' + data);
-	});
-
-    // places markers of previous reports in database
-    //========== This needs to go in profile controller =======//
-    function setMarkers(data, map){
-    	$http.get('/reports')
-    	.success(function(data) {
-    		var locations = data.result;
-    		for (var i = 0; i < locations.length; i++) {
-    			var myLatLng = new google.maps.LatLng(locations[i].latitude, locations[i].longitude);
-    			var marker = new google.maps.Marker({
-    				position: myLatLng,
-    				map: map
-    			});
-    			var infowindow = new google.maps.InfoWindow({
-    				content: "Gracias por reportar \n" + locations[i].title + "\n" + locations[i].description
-    			});
-    			console.log(myLatLng.b);
-    			console.log(myLatLng.d);
-    		}
-    	})     
-    };
 });
 
 

@@ -33,3 +33,8 @@
   height: 400px;
   width: 50%;
 }
+
+#infoWindow {
+    width: 100px;
+    height: 100px;
+}

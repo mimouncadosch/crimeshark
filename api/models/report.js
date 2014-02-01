@@ -16,10 +16,12 @@ var reportSchema = new Schema({
 	// Nested schemas aren't allowed in Mongoose, so
 	// 'user: User' won't work
 	user    : { type: Schema.Types.ObjectId, ref: 'User' },
-	title   : String,
-	body    : String,
+	name   : String,
+	description    : String,
+	place 			: String,
 	date	: { type: Date, default: Date.now },
-	location: { lat: Number, lng: Number }
+	latitude : Number,
+	longitude : Number
 });
 
 // add the elmongo plugin to our collection

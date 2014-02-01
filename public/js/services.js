@@ -211,7 +211,11 @@ myApp.factory('ProfileMap', function($http, $rootScope, $location) {
             });
 
             // Add Drawing Manager to map
-            drawingManager.setMap(map);    
+            
+            //=======================================
+            //=======================================
+            // In the interest of time (1/30/2014), we won't give the user the option to update his/her perimeter
+            // drawingManager.setMap(map);    
             
             // Show polygon on map
             perimeter.setMap(map);
@@ -223,11 +227,46 @@ myApp.factory('ProfileMap', function($http, $rootScope, $location) {
             }
             map.fitBounds(bounds);
 
+
+            // places markers of previous reports in database
+            function setMarkers(map){
+                $http.get('/api/reports')
+                .success(function(data) {
+                    var locations = data;
+                    for (var i = 0; i < locations.length; i++) {
+                        var myLatLng = new google.maps.LatLng(locations[i].latitude, locations[i].longitude);
+                        var marker = new google.maps.Marker({
+                            position: myLatLng,
+                            map: map
+                        });
+                        
+                      var contentString =  
+                          '<div id="infoWindow">'+
+                          '<h1>' + locations[i].name + '</h1>'+
+                          '<h2>' + locations[i].description + '</h2>'+
+                          '</div>';
+
+                        var infowindow = new google.maps.InfoWindow({
+                            content: contentString
+                        });
+
+                        google.maps.event.addListener(marker, 'click', function() {
+                            infowindow.open(map,marker);
+                        });
+
+                        console.log(myLatLng.d);
+                        console.log(myLatLng.e);
+                    }
+                })     
+            };
+
             // Initialize the map
             function initialize(map_id, data) { 
             };
 
             google.maps.event.addDomListener(window, 'load', initialize);  
+
+            setMarkers(map);
         }
     };
 
