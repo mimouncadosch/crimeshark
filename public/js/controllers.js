@@ -71,7 +71,7 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location, GoogleM
 			});
 		};
 	}).
-controller('profileCtrl', function ($scope, $rootScope, $http, $location, GoogleMap, ProfileMap, Auth) {
+controller('profileCtrl', function ($scope, $rootScope, $http, $location, GoogleMap, Auth) {
 		/**
 		* Makes sure the app already recognizes the user is logged in
 		* If not, it redirects to the login page
@@ -81,7 +81,7 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location, Google
 		console.log("Profile page front-end");
 		
 		var map = GoogleMap.createMap();
-		GoogleMap.placeMarkers(map);
+		GoogleMap.populateMarkers(map);
 
 		Auth.getUser(function() {
 			var polygonCoordinates = GoogleMap.createPolygonCoordinates($scope.user.perimeter);
@@ -108,12 +108,14 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location, Google
 			})
 		}
 }).
-controller('reportCtrl', function ($scope, $rootScope, $http, $location, ReportMap){
+controller('reportCtrl', function ($scope, $rootScope, $http, $location, GoogleMap){
 	/**
 	* This controller allows users and the police to post reports.
 	* Reports are sent to the backend via HTTP POST request.
 	*/
-
+	var map = GoogleMap.createMap();
+	var markersArray = [];
+	GoogleMap.placeMarker(map);
 	// Post request to send data to the backend
 	$scope.postReport = function() {
 		
@@ -134,7 +136,5 @@ controller('reportCtrl', function ($scope, $rootScope, $http, $location, ReportM
 	};
 
 });
-
-
 
 // Sources: http://snippetlib.com/google_maps/drawing_tools

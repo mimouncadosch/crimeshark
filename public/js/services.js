@@ -52,14 +52,14 @@ myApp.factory('ReportMap', function($http) {
     var markersArray = [];
 
     // Delete the old marker when the user places a new one
-    function deleteOverlays() {
-    	if (markersArray) {
-    		for (var i in markersArray) {
-    			markersArray[i].setMap(null);
-    		}
-    		markersArray.length = 0;
-    	}
-    };
+    // function deleteOverlays() {
+    // 	if (markersArray) {
+    // 		for (var i in markersArray) {
+    // 			markersArray[i].setMap(null);
+    // 		}
+    // 		markersArray.length = 0;
+    // 	}
+    // };
 
     // Enables users to place a marker where the report happened
     function placeMarker(location) {
@@ -138,7 +138,7 @@ myApp.factory('GoogleMap', function($http) {
             drawingManager.setMap(map); 
             return drawingManager;
         },
-        placeMarkers: function(map) {
+        populateMarkers: function(map) {
             var locations = [];
 
             var triggerMarkers = function(locations) {
@@ -207,6 +207,38 @@ myApp.factory('GoogleMap', function($http) {
             });
             // Show polygon on map
             googlePerimeter.setMap(map);
+        },
+        deleteMarkers: function(markersArray){
+            console.log("deleting markers");
+            if (markersArray) {
+                for (var i in markersArray) {
+                    markersArray[i].setMap(null);
+                }
+                markersArray.length = 0;
+            }
+        },
+        placeMarker: function(map){
+            // this.deleteMarkers(markersArray);
+            
+            google.maps.event.addListener(map, 'click', function(event) {
+                
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: location
+                });
+                
+                var latitude = location.lat();
+                var longitude = location.lng();
+                var infowindow = new google.maps.InfoWindow({
+                    content: "Thanks for reporting with us"
+                });
+                document.getElementById("latitude").value = latitude;
+                document.getElementById("longitude").value = longitude;
+
+                infowindow.open(map,marker);
+
+                coordinates = location;
+            });
         }
     }
 });
