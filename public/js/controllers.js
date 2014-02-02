@@ -71,15 +71,16 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location, GoogleM
 			});
 		};
 	}).
-controller('profileCtrl', function ($scope, $rootScope, $http, $location, ProfileMap) {
+controller('profileCtrl', function ($scope, $rootScope, $http, $location, GoogleMap, ProfileMap) {
 		/**
 		* Makes sure the app already recognizes the user is logged in
 		* If not, it redirects to the login page
 		*/
 		
 		//Makes an http GET request to the backend 
-		console.log("prof page front");
-		//console.log($rootScope.user);
+		console.log("Profile page front-end");
+		
+		var map = GoogleMap.createMap();
 
 		if(!$rootScope.user){
 	        $http({
@@ -88,10 +89,11 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location, Profil
 	        }).success(function (data, status, headers, config) {
 	            if(data) {
 	                // Saves the user to rootScope
-	                console.log('got user!');
+	                console.log('Got user from backend!');
 	                $rootScope.user = data;
 	                console.log($rootScope.user);
-	                ProfileMap.startMap($rootScope.user.perimeter);
+	                GoogleMap.placeMarkers($rootScope.user.perimeter, map);
+	                // ProfileMap.startMap($rootScope.user.perimeter);
 	            } else {
 	                console.log('should redirect!');
 	                $location.path("/login");
@@ -100,7 +102,8 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location, Profil
 	            console.log('error');
 	        });
 	    } else {
-	    	ProfileMap.startMap($rootScope.user.perimeter);
+	    	// ProfileMap.startMap($rootScope.user.perimeter);
+	    	GoogleMap.placeMarkers($rootScope.user.perimeter, map);
 	    }
 		
 		$scope.logout = function() {
