@@ -291,49 +291,47 @@ myApp.factory('ProfileMap', function($http, $rootScope, $location) {
 
 myApp.factory('SignupMap', function($http, $rootScope) {
 
-    var map = new google.maps.Map(document.getElementById('map-canvas'),
-        myOptions);
-    var drawingManager = new google.maps.drawing.DrawingManager({
-        drawingMode: google.maps.drawing.OverlayType.MARKER,
-        drawingControl: true,
-        drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_CENTER,
-            drawingModes: [
-            google.maps.drawing.OverlayType.POLYGON
-            ]
-        },
-        markerOptions: {
-            icon: 'images/beachflag.png'
-        },
-        circleOptions: {
-            fillColor: '#ffff00',
-            fillOpacity: 1,
-            strokeWeight: 5,
-            clickable: false,
-            editable: true,
-            zIndex: 1
-        }
-    });
+    // return {
+    //     populateMap: function(map){
 
-    drawingManager.setMap(map); 
+
+    //     }
+    // }
+    // var drawingManager = new google.maps.drawing.DrawingManager({
+    //     drawingMode: google.maps.drawing.OverlayType.MARKER,
+    //     drawingControl: true,
+    //     drawingControlOptions: {
+    //         position: google.maps.ControlPosition.TOP_CENTER,
+    //         drawingModes: [
+    //         google.maps.drawing.OverlayType.POLYGON
+    //         ]
+    //     },
+    //     circleOptions: {
+    //         fillColor: '#ffff00',
+    //         fillOpacity: 1,
+    //         strokeWeight: 5,
+    //         clickable: false,
+    //         editable: true,
+    //         zIndex: 1
+    //     }
+    // });
+
+    // drawingManager.setMap(map); 
 
     //Leave emtpy
-    function initialize(map_id, data, map){
-    };
+    // function initialize(map_id, data, map){
+    // };
     
-    function addPolygonListener(){
-        google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
-            var coordinates = (polygon.getPath().getArray());
-            $rootScope.coordinates = coordinates;
-        });
-    };
+    // function addPolygonListener(){
+        
+    // };
     
-    var polygonPerimeter = addPolygonListener();    
+    // var polygonPerimeter = addPolygonListener();    
 
     google.maps.event.addDomListener(window, 'load', initialize);
 });
 
-myApp.factory('CreateMap', function() {
+myApp.factory('GoogleMap', function() {
     
     return {
         createMap: function() {
@@ -346,7 +344,38 @@ myApp.factory('CreateMap', function() {
             var map = new google.maps.Map(document.getElementById('map-canvas'),
                 myOptions);
 
+            function initialize(map_id, data, map){
+            };
+            
             return map;
+        },
+        createDrawingManager: function(map) {
+            var drawingManager = new google.maps.drawing.DrawingManager({
+                drawingMode: google.maps.drawing.OverlayType.MARKER,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: [
+                    google.maps.drawing.OverlayType.POLYGON
+                    ]
+                },
+                circleOptions: {
+                    fillColor: '#ffff00',
+                    fillOpacity: 1,
+                    strokeWeight: 5,
+                    clickable: false,
+                    editable: true,
+                    zIndex: 1
+                }
+            });
+            drawingManager.setMap(map); 
+        },
+        createPolygon: function() {
+            google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
+                var coordinates = (polygon.getPath().getArray());
+                return coordinates;
+            });
         }
     }
+
 });

@@ -34,11 +34,12 @@ controller('loginCtrl', function ($scope, $rootScope, $http, $location) {
 			});
 		};
 	}).
-controller('signupCtrl', function ($scope, $rootScope, $http, $location, SignupMap) {
+controller('signupCtrl', function ($scope, $rootScope, $http, $location, SignupMap, GoogleMap) {
 		/**
 		 * Sign up using name, email and password.
 		 */
 
+		var map = GoogleMap.createMap();
 		//SignupMap.startMap(); 
 		$scope.signup = function() {
 			 // Makes an http POST request to the backend
