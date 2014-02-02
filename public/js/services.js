@@ -288,6 +288,7 @@ myApp.factory('ProfileMap', function($http, $rootScope, $location) {
     };
 
 });
+
 myApp.factory('SignupMap', function($http, $rootScope) {
 
     var map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -333,14 +334,19 @@ myApp.factory('SignupMap', function($http, $rootScope) {
 });
 
 myApp.factory('CreateMap', function() {
-    var myOptions = {
-        zoom : 12,
-        center : new google.maps.LatLng(40.750046, -73.992358),
-        mapTypeId : google.maps.MapTypeId.ROADMAP
-    };
-
-    var map = new google.maps.Map(document.getElementById('map-canvas'),
-            myOptions);
     
-    return map;
+    return {
+        createMap: function() {
+            var myOptions = {
+                zoom : 12,
+                center : new google.maps.LatLng(40.750046, -73.992358),
+                mapTypeId : google.maps.MapTypeId.ROADMAP
+            };
+
+            var map = new google.maps.Map(document.getElementById('map-canvas'),
+                myOptions);
+
+            return map;
+        }
+    }
 });
