@@ -45,6 +45,25 @@ module.exports = function(app) {
 			res.end();
 		});
 
+		console.log("req.user.id");
+		
+		console.log(req.user.id);
+
+		User.findOne({'_id': req.user._id})
+		.exec(function(err, user) {
+			user.reports.push(req.report._id);
+			
+			console.log("User_id");
+			console.log(user);
+			console.dir(user);
+			console.log("user report saved to his account");
+		});
+
+			// Send 200 OK response
+			res.status(200);
+			// return control to the front-end
+			res.end();
+
 		// When a new report is created, loop through each user's safety perimeter to see if this report falls within his or her safety area
 		console.log("Report has been created!");
 		console.log("Number of users", usersList.length);
