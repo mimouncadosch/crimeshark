@@ -34,17 +34,19 @@ controller('loginCtrl', function ($scope, $rootScope, $http, $location) {
 			});
 		};
 	}).
-controller('signupCtrl', function ($scope, $rootScope, $http, $location, SignupMap, GoogleMap) {
+controller('signupCtrl', function ($scope, $rootScope, $http, $location, GoogleMap) {
 		/**
 		 * Sign up using name, email and password.
 		 */
 
 		var map = GoogleMap.createMap();
+		GoogleMap.createDrawingManager(map);
+
 		//SignupMap.startMap(); 
 		$scope.signup = function() {
 			 // Makes an http POST request to the backend
 			 //Backend recieves an object, the user
-			 $scope.user.perimeter = $rootScope.coordinates;
+			 $scope.user.perimeter = GoogleMap.createPolygon();
 			 $http({
 			 	method: 'POST',
 			 	url: '/api/signup',

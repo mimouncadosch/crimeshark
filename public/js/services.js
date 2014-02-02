@@ -328,7 +328,7 @@ myApp.factory('SignupMap', function($http, $rootScope) {
     
     // var polygonPerimeter = addPolygonListener();    
 
-    google.maps.event.addDomListener(window, 'load', initialize);
+    //google.maps.event.addDomListener(window, 'load', initialize);
 });
 
 myApp.factory('GoogleMap', function() {
