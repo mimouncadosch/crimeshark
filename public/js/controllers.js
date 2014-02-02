@@ -39,14 +39,19 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location, GoogleM
 		 * Sign up using name, email and password.
 		 */
 
+		$scope.user = {};
+		
 		var map = GoogleMap.createMap();
-		GoogleMap.createDrawingManager(map);
+		var drawingManager = GoogleMap.createDrawingManager(map);
+		GoogleMap.createPolygonListener(drawingManager);
+		
 
 		//SignupMap.startMap(); 
 		$scope.signup = function() {
 			 // Makes an http POST request to the backend
 			 //Backend recieves an object, the user
-			 $scope.user.perimeter = GoogleMap.createPolygon();
+			 $scope.user.perimeter = GoogleMap.createPolygonListener(drawingManager);
+			 console.log($scope.user.perimeter)
 			 $http({
 			 	method: 'POST',
 			 	url: '/api/signup',

@@ -356,7 +356,7 @@ myApp.factory('GoogleMap', function() {
                 drawingControlOptions: {
                     position: google.maps.ControlPosition.TOP_CENTER,
                     drawingModes: [
-                    google.maps.drawing.OverlayType.POLYGON
+                        google.maps.drawing.OverlayType.POLYGON
                     ]
                 },
                 circleOptions: {
@@ -369,10 +369,13 @@ myApp.factory('GoogleMap', function() {
                 }
             });
             drawingManager.setMap(map); 
+            return drawingManager;
         },
-        createPolygon: function() {
+        createPolygonListener: function(drawingManager) {
             google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
                 var coordinates = (polygon.getPath().getArray());
+                console.log(("Polygon listener being called"))
+                console.log(coordinates);
                 return coordinates;
             });
         }
