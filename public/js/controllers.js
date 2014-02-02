@@ -71,7 +71,7 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location, GoogleM
 			});
 		};
 	}).
-controller('profileCtrl', function ($scope, $rootScope, $http, $location, GoogleMap, ProfileMap) {
+controller('profileCtrl', function ($scope, $rootScope, $http, $location, GoogleMap, ProfileMap, Auth) {
 		/**
 		* Makes sure the app already recognizes the user is logged in
 		* If not, it redirects to the login page
@@ -81,31 +81,14 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location, Google
 		console.log("Profile page front-end");
 		
 		var map = GoogleMap.createMap();
+		GoogleMap.placeMarkers(map);
 
-		if(!$rootScope.user){
-	        $http({
-	            method: 'GET',
-	            url: '/api/isLoggedin'
-	        }).success(function (data, status, headers, config) {
-	            if(data) {
-	                // Saves the user to rootScope
-	                console.log('Got user from backend!');
-	                $rootScope.user = data;
-	                console.log($rootScope.user);
-	                GoogleMap.placeMarkers($rootScope.user.perimeter, map);
-	                // ProfileMap.startMap($rootScope.user.perimeter);
-	            } else {
-	                console.log('should redirect!');
-	                $location.path("/login");
-	            }
-	        }).error(function (data, status, headers, config) {
-	            console.log('error');
-	        });
-	    } else {
-	    	// ProfileMap.startMap($rootScope.user.perimeter);
-	    	GoogleMap.placeMarkers($rootScope.user.perimeter, map);
-	    }
-		
+		Auth.getUser(function() {
+			var polygonCoordinates = GoogleMap.createPolygonCoordinates($scope.user.perimeter);
+		    GoogleMap.centerMap(polygonCoordinates, map);
+		    GoogleMap.drawPolygon(polygonCoordinates, map);
+		});
+	    
 		$scope.logout = function() {
 			$rootScope.user = null;
 			$http.get('/api/logout')
