@@ -120,6 +120,7 @@ controller('reportCtrl', function ($scope, $rootScope, $http, $location, ReportM
 		
 		$scope.report.latitude = ReportMap.returnCoordinates().d;
 		$scope.report.longitude = ReportMap.returnCoordinates().e;
+		$scope.report.user = $rootScope.user;
 		
 		$http({
 			method: 'POST',
