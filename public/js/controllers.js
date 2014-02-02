@@ -68,6 +68,7 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location, Profil
 		console.log("prof page front");
 		//console.log($rootScope.user);
 
+		ProfileMap.startMap($rootScope.user.perimeter);
 		if(!$rootScope.user){
 	        $http({
 	            method: 'GET',
@@ -78,7 +79,7 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location, Profil
 	                console.log('got user!');
 	                $rootScope.user = data;
 	                console.log($rootScope.user);
-	                ProfileMap.startMap($rootScope.user.perimeter);
+	                ProfileMap.loadMap($rootScope.user.perimeter);
 	            } else {
 	                console.log('should redirect!');
 	                $location.path("/login");

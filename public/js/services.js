@@ -58,11 +58,7 @@ var myApp = angular.module('myApp.services', []);
  */
 
 // Define map options
-    var myOptions = {
-        zoom : 12,
-        center : new google.maps.LatLng(40.750046, -73.992358),
-        mapTypeId : google.maps.MapTypeId.ROADMAP
-    };
+    
 
 myApp.factory('ReportMap', function($http) {
 	/**
@@ -321,7 +317,6 @@ myApp.factory('SignupMap', function($http, $rootScope) {
     drawingManager.setMap(map); 
 
     //Leave emtpy
-
     function initialize(map_id, data, map){
     };
     
@@ -336,3 +331,17 @@ myApp.factory('SignupMap', function($http, $rootScope) {
 
     google.maps.event.addDomListener(window, 'load', initialize);
 });
+
+myApp.factory('CreateMap', function() {
+    var myOptions = {
+        zoom : 12,
+        center : new google.maps.LatLng(40.750046, -73.992358),
+        mapTypeId : google.maps.MapTypeId.ROADMAP
+    };
+    
+    var map = new google.maps.Map(document.getElementById('map-canvas'),
+            myOptions);
+    
+    return map;
+});
+
