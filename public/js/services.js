@@ -370,15 +370,8 @@ myApp.factory('GoogleMap', function() {
             });
             drawingManager.setMap(map); 
             return drawingManager;
-        },
-        createPolygonListener: function(drawingManager) {
-            google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
-                var coordinates = (polygon.getPath().getArray());
-                console.log(("Polygon listener being called"))
-                console.log(coordinates);
-                return coordinates;
-            });
         }
+        
     }
 
 });

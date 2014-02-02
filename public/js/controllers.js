@@ -40,17 +40,22 @@ controller('signupCtrl', function ($scope, $rootScope, $http, $location, GoogleM
 		 */
 
 		$scope.user = {};
-		
+
 		var map = GoogleMap.createMap();
 		var drawingManager = GoogleMap.createDrawingManager(map);
-		GoogleMap.createPolygonListener(drawingManager);
+		google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
+            //var coordinates = [];
+            var coordinates = (polygon.getPath().getArray());
+            console.log(("Polygon listener being called"))
+            console.log(coordinates);     
+            $scope.user.perimeter = coordinates;
+        })
 		
 
 		//SignupMap.startMap(); 
 		$scope.signup = function() {
 			 // Makes an http POST request to the backend
 			 //Backend recieves an object, the user
-			 $scope.user.perimeter = GoogleMap.createPolygonListener(drawingManager);
 			 console.log($scope.user.perimeter)
 			 $http({
 			 	method: 'POST',
