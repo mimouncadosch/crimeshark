@@ -2,13 +2,14 @@
 
 var Report = require('./models/report');
 var User = require('./models/user');
+var nodemailer = require("nodemailer");
 
 /*
  * Routes for GETTING report(s), and creating/updating reports
  */
 module.exports = function(app) {
 
-	var name = "Mimoun";
+	// List of users
 	var usersList;
 	User.find({})
 		.exec(function(err, list) {
@@ -26,12 +27,7 @@ module.exports = function(app) {
 
 	// Posting a new report and checking whether it falls within a user's safety perimeter
 	app.post('/api/report/new', function(req, res) {
-		// console.log("Checking if report was passed properly");
-		// console.log(req.param('name'));
-		// console.log(req.param('description'));
-		// console.log(req.param('place'));
-		// console.log(req.param('latitude'));
-		// console.log(req.param('longitude'));
+
 
 		// create a report, information comes from AJAX request from Angular
 		Report.create({
@@ -49,15 +45,15 @@ module.exports = function(app) {
 			res.end();
 		});
 
-		
 		// When a new report is created, loop through each user's safety perimeter to see if this report falls within his or her safety area
 		console.log("Report has been created!");
+		console.log("Number of users", usersList.length);
 		
 		// Loop through list of users
-		for (var i = 0; i < usersList.length; i++) {
-			
-
-			var user = usersList[i];
+		for (var k = 0; k < usersList.length; k++) {
+			var user = usersList[k];
+			console.log("User name : ", user.name);
+			console.log("User email : ", user.local.email);
 			
 			// Arrays with the latitude & longitude coordinates for a user's safety perimeter
 			var latitudes = [];
@@ -77,25 +73,48 @@ module.exports = function(app) {
 			maxLongitude = findMax(longitudes);
 			minLatitude = findMin(latitudes);
 			minLongitude = findMin(longitudes);
-			console.log(maxLatitude);
-			console.log(maxLongitude);
-			console.log(minLatitude);
-			console.log(minLongitude);
 
 			var inPerimeter = withinPerimeter(maxLatitude, minLatitude, maxLongitude, minLongitude, req.param('latitude'), req.param('longitude'))
-			console.log(inPerimeter);
 
 			if(inPerimeter){
 				console.log("This report falls within ", user.name, "'s safety perimeter");	
+				console.log("User email = ", user.local.email);
+
+				//========================================================
+				//================== EMAIL IMPLEMENTATION ================
+				//========================================================
+		
+				// Create reusable transport method (opens pool of SMTP connections)
+				var smtpTransport = nodemailer.createTransport("SMTP",{
+					service: "Gmail",
+					auth: {
+						user: "crimesharknyc@gmail.com",
+						pass: "tzahalunis"
+					}
+				});
+				// setup e-mail data with unicode symbols
+				var mailOptions = {
+				    from: "CrimeShark <crimesharknyc@gmail.com>", // sender address
+				    to: user.local.email, // list of receivers
+				    subject: "Something has been reported in your safety perimeter", // Subject line
+				    text: "Hello!", // plaintext body
+				    html: "<b>Hello world ✔</b>" // html body
+				}
+
+				// send mail with defined transport object
+				smtpTransport.sendMail(mailOptions, function(error, response){
+					if(error){
+						console.log(error);
+					}else{
+						console.log("Message sent: " + response.message);
+					}
+				});
+
 			}
 			else if(!inPerimeter){
 				console.log("This report does not fall within ", user.name, "'s safety perimeter");		
 			}
-			
-
-			// Email implementation
-
-
+			console.log("Email #", k, "sent, on to the next one");
 		};
 		
 	});
@@ -189,7 +208,6 @@ module.exports = function(app) {
 		});
 	});
 
-};
 
 
 
@@ -198,64 +216,66 @@ module.exports = function(app) {
 //====================================================================
 
 
-// Get report by id
-function getReport(id) {
-	var query = Report.findOne({'_id': id});
-	return query;
-}
-
-// Gets all reports
-function getReports() {
-	var query = Report.find({});
-	return query;
-}
-
-// Get all users
-function getUsers() {
-	var query = User.find({});
-	return query;
-}
-
-
-// Get user by id
-function getUser(id) {
-	var query = User.findOne({'_id': id});
-	return query;
-}
-
-// Generic function to find largest value in an array
-function findMax(array) {
-	var max = array[0];
-	for (var i = 1; i < array.length; i++) {
-		if(max < array[i]){
-			max = array[i];
-		}
-	};	
-	return max;
-}
-
-// Generic function to find smallest value in an array
-function findMin(array) {
-	var min = array[0];
-	for (var i = 1; i < array.length; i++) {
-		if(min > array[i]){
-			min = array[i];
-		}
-	};	
-	return min;
-}
-
-// This function determines whether a point is within a perimeter. 
-// The perimeter is categorized by the coordinates of the max & min latitude and longitude (4 variables)
-function withinPerimeter(maxLatitude, minLatitude, maxLongitude, minLongitude, pointLatitude, pointLongitude){
-	var inPerimeter = false;
-	if(	minLatitude <= pointLatitude 
-		&& pointLatitude <= maxLatitude 
-		&& minLongitude <= pointLongitude
-		&& pointLongitude <= maxLongitude ){
-
-		inPerimeter = true;
-		console.log("Point within Safety Perimeter");
+	// Get report by id
+	function getReport(id) {
+		var query = Report.findOne({'_id': id});
+		return query;
 	}
-	return inPerimeter;
-}
+
+	// Gets all reports
+	function getReports() {
+		var query = Report.find({});
+		return query;
+	}
+
+	// Get all users
+	function getUsers() {
+		var query = User.find({});
+		return query;
+	}
+
+
+	// Get user by id
+	function getUser(id) {
+		var query = User.findOne({'_id': id});
+		return query;
+	}
+
+	// Generic function to find largest value in an array
+	function findMax(array) {
+		var max = array[0];
+		for (var i = 1; i < array.length; i++) {
+			if(max < array[i]){
+				max = array[i];
+			}
+		};	
+		return max;
+	}
+
+	// Generic function to find smallest value in an array
+	function findMin(array) {
+		var min = array[0];
+		for (var i = 1; i < array.length; i++) {
+			if(min > array[i]){
+				min = array[i];
+			}
+		};	
+		return min;
+	}
+
+	// This function determines whether a point is within a perimeter. 
+	// The perimeter is categorized by the coordinates of the max & min latitude and longitude (4 variables)
+	function withinPerimeter(maxLatitude, minLatitude, maxLongitude, minLongitude, pointLatitude, pointLongitude){
+		var inPerimeter = false;
+		if(	minLatitude <= pointLatitude 
+			&& pointLatitude <= maxLatitude 
+			&& minLongitude <= pointLongitude
+			&& pointLongitude <= maxLongitude ){
+
+			inPerimeter = true;
+			console.log("Point within Safety Perimeter");
+		}
+		return inPerimeter;
+	}
+
+};
