@@ -1,9 +1,7 @@
 // ./api/userAPI
 
 // Load our models
-var User = require('./models/user'),
-Crime     = require('./models/report');
-
+var User = require('./models/user');
 /**
  *  Aggregation strategies:
  *  

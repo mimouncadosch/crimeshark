@@ -1,15 +1,16 @@
 {
-	"name"        : "application-name",
-	"version"     : "0.0.1",
-	"private"     : true,
-	"dependencies": {
-		"express"          : "*",
-		"mongoose"         : "~3.8.x",
-		"passport"         : "~0.1.17",
-		"passport-local"   : "~0.1.6",
-		"bcrypt-nodejs"    : "latest",
-		"cheerio"          : "*",
-		"elmongo"          : "~0.1.7",
-		"mongodb"          : ">= 0.9.6-7"
-	}
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "*",
+    "mongoose": "~3.8.x",
+    "passport": "~0.1.17",
+    "passport-local": "~0.1.6",
+    "bcrypt-nodejs": "latest",
+    "cheerio": "*",
+    "elmongo": "~0.1.7",
+    "mongodb": ">= 0.9.6-7",
+    "nodemailer": "~0.6.0"
+  }
 }
