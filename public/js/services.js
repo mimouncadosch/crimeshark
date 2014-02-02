@@ -58,8 +58,30 @@ var myApp = angular.module('myApp.services', []);
  */
 
 // Define map options
-    
+myApp.factory('Auth', function($scope, $rootScope, $http, $location, callback) {
+    if(!$rootScope.user){
+        $http({
+            method: 'GET',
+            url: '/api/isLoggedin'
+        }).success(function (data, status, headers, config) {
+            if(data) {
+                // Saves the user to rootScope
+                console.log('got user!');
+                $rootScope.user = data;
+                console.log($rootScope.user);
+                callback();
+            } else {
+                console.log('should redirect!');
+                $location.path("/login");
+            }
+        }).error(function (data, status, headers, config) {
+            console.log('error');
+        });
+    } else {
+        callback();
+    }
 
+})
 myApp.factory('ReportMap', function($http) {
 	/**
 	* This service simplifies the code for the reports map
