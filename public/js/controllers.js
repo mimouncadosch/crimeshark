@@ -115,6 +115,24 @@ controller('reportCtrl', function ($scope, $rootScope, $http, $location, ReportM
 	* Reports are sent to the backend via HTTP POST request.
 	*/
 
+	if(!$rootScope.user){
+	    $http({
+	        method: 'GET',
+	        url: '/api/isLoggedin'
+	    }).success(function (data, status, headers, config) {
+	        if(data) {
+	            // Saves the user to rootScope
+	            console.log('got user!');
+	            $rootScope.user = data;
+	        } else {
+	            console.log('should redirect!');
+	            $location.path("/login");
+	        }
+	    }).error(function (data, status, headers, config) {
+	        console.log('error');
+	    });
+	}
+
 	// Post request to send data to the backend
 	$scope.postReport = function() {
 		
