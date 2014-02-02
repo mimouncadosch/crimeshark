@@ -338,10 +338,9 @@ myApp.factory('CreateMap', function() {
         center : new google.maps.LatLng(40.750046, -73.992358),
         mapTypeId : google.maps.MapTypeId.ROADMAP
     };
-    
+
     var map = new google.maps.Map(document.getElementById('map-canvas'),
             myOptions);
     
     return map;
 });
-

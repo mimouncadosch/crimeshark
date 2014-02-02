@@ -68,7 +68,6 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location, Profil
 		console.log("prof page front");
 		//console.log($rootScope.user);
 
-		ProfileMap.startMap($rootScope.user.perimeter);
 		if(!$rootScope.user){
 	        $http({
 	            method: 'GET',
@@ -79,7 +78,7 @@ controller('profileCtrl', function ($scope, $rootScope, $http, $location, Profil
 	                console.log('got user!');
 	                $rootScope.user = data;
 	                console.log($rootScope.user);
-	                ProfileMap.loadMap($rootScope.user.perimeter);
+	                ProfileMap.startMap($rootScope.user.perimeter);
 	            } else {
 	                console.log('should redirect!');
 	                $location.path("/login");
@@ -115,24 +114,6 @@ controller('reportCtrl', function ($scope, $rootScope, $http, $location, ReportM
 	* This controller allows users and the police to post reports.
 	* Reports are sent to the backend via HTTP POST request.
 	*/
-
-	if(!$rootScope.user){
-	    $http({
-	        method: 'GET',
-	        url: '/api/isLoggedin'
-	    }).success(function (data, status, headers, config) {
-	        if(data) {
-	            // Saves the user to rootScope
-	            console.log('got user!');
-	            $rootScope.user = data;
-	        } else {
-	            console.log('should redirect!');
-	            $location.path("/login");
-	        }
-	    }).error(function (data, status, headers, config) {
-	        console.log('error');
-	    });
-	}
 
 	// Post request to send data to the backend
 	$scope.postReport = function() {
