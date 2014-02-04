@@ -114,14 +114,17 @@ controller('reportCtrl', function ($scope, $rootScope, $http, $location, GoogleM
 	* Reports are sent to the backend via HTTP POST request.
 	*/
 	var map = GoogleMap.createMap();
-	var markersArray = [];
-	GoogleMap.placeMarker(map);
+	$scope.markers = [];
+	GoogleMap.placeMarker(map, $scope.markers);
+	
 	// Post request to send data to the backend
 	$scope.postReport = function() {
+		$scope.report.latitude = $scope.markers[0].position.d;
+		$scope.report.longitude = $scope.markers[0].position.e;
 		
-		$scope.report.latitude = ReportMap.returnCoordinates().d;
-		$scope.report.longitude = ReportMap.returnCoordinates().e;
-		$scope.report.user = $rootScope.user;
+		if($rootScope.user) {
+			$scope.report.user = $rootScope.user;	
+		}
 		
 		$http({
 			method: 'POST',
