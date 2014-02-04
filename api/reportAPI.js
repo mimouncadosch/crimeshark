@@ -49,15 +49,16 @@ module.exports = function(app) {
 		
 		console.log(req.user.id);
 
-		User.findOne({'_id': req.user._id})
-		.exec(function(err, user) {
-			user.reports.push(req.report._id);
+		// TODO it doesnt work
+		// User.findOne({'_id': req.user._id})
+		// .exec(function(err, user) {
+		// 	user.reports.push(req.report._id);
 			
-			console.log("User_id");
-			console.log(user);
-			console.dir(user);
-			console.log("user report saved to his account");
-		});
+		// 	console.log("User_id");
+		// 	console.log(user);
+		// 	console.dir(user);
+		// 	console.log("user report saved to his account");
+		// });
 
 			// Send 200 OK response
 			res.status(200);
@@ -95,6 +96,8 @@ module.exports = function(app) {
 
 			var inPerimeter = withinPerimeter(maxLatitude, minLatitude, maxLongitude, minLongitude, req.param('latitude'), req.param('longitude'))
 
+
+			//get contents from email
 			if(inPerimeter){
 				console.log("This report falls within ", user.name, "'s safety perimeter");	
 				console.log("User email = ", user.local.email);

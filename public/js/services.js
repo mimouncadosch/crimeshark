@@ -210,25 +210,18 @@ myApp.factory('GoogleMap', function($http) {
         },
         deleteMarkers: function(markersArray){
             console.log("deleting markers");
-            if (markersArray) {
-                for (var i in markersArray) {
-                    markersArray[i].setMap(null);
-                }
-                markersArray.length = 0;
-            }
-        },
-        placeMarker: function(map){
-            // this.deleteMarkers(markersArray);
             
+        },
+        placeMarker: function(map, markers){
             google.maps.event.addListener(map, 'click', function(event) {
-                
+                deleteMarkers(markers);
                 var marker = new google.maps.Marker({
                     map: map,
-                    position: location
+                    position: event.latLng
                 });
                 
-                var latitude = location.lat();
-                var longitude = location.lng();
+                var latitude = event.latLng.lat();
+                var longitude = event.latLng.lng();
                 var infowindow = new google.maps.InfoWindow({
                     content: "Thanks for reporting with us"
                 });
@@ -236,9 +229,16 @@ myApp.factory('GoogleMap', function($http) {
                 document.getElementById("longitude").value = longitude;
 
                 infowindow.open(map,marker);
-
-                coordinates = location;
+                markers.push(marker);
             });
+            var deleteMarkers = function() {
+                if (markers) {
+                    for (var i in markers) {
+                        markers[i].setMap(null);
+                    }
+                    markers.length = 0;
+                }
+            }
         }
     }
 });
